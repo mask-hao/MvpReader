@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:cardCornerRadius="3dp"
+    app:cardUseCompatPadding="true"
+    android:layout_marginStart="3dp"
+    android:layout_marginEnd="3dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:padding="5dp"
+        android:id="@+id/zhihu_title"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:lines="3"
+        android:layout_marginEnd="3dp"
+        android:layout_toStartOf="@+id/zhihu_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/zhihu_img"
+        android:layout_alignParentEnd="true"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

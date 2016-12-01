@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Reader</string>
+    <string name="frag_zhihu_title">知乎日报</string>
+    <string name="frag_gankio_title">技术干货</string>
+    <string name="frag_gank_android_title">Android</string>
+    <string name="frag_photo_title">每日福利</string>
+    <string name="frag_video_title">videoBeen</string>
+    <string name="open">打开</string>
+    <string name="close">关闭</string>
+</resources>
