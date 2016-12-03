@@ -31,45 +31,49 @@ public class ZhiHuApi extends WebApi{
 
     private String baseUrl="http://news-at.zhihu.com";
     private Retrofit retrofit;
-    private Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR;
     private Cache cache;
-
-
-    private void initInterceptor(){
-        REWRITE_CACHE_CONTROL_INTERCEPTOR=new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Response originResponse=chain.proceed(chain.request());
-                if (NetWorkUtil.isNetWorkAvailable(MyApplication.getContext())){
-                    //如果有网络
-                    Log.d(TAG, "intercept: 有网络");
-                    int maxAge=60;//一分钟
-                    return  originResponse.newBuilder()
-                            .removeHeader("Pragma")
-                            .removeHeader("Cache-Control")
-                            .header("Cache-Control", "public, max-age=" + maxAge)
-                            .build();
-                }else{
-                    Log.d(TAG, "intercept: 无网络");
-
-                    int maxAge=60*60*24*7;//一周
-                    return originResponse.newBuilder()
-                            .removeHeader("Pragma")
-                            .removeHeader("Cache-Control")
-                            .header("Cache-Control", "public, only-if-cached, max-stale=" + maxAge)
-                            .build();
-                }
+    private  static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR=new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Response originResponse=chain.proceed(chain.request());
+            if (NetWorkUtil.isNetWorkAvailable(MyApplication.getContext())){
+                //如果有网络
+                Log.d(TAG, "intercept: 有网络");
+                int maxAge=60;//一分钟
+                return  originResponse.newBuilder()
+                        .removeHeader("Pragma")
+                        .removeHeader("Cache-Control")
+                        .header("Cache-Control", "public, max-age=" + maxAge)
+                        .build();
+            }else{
+                Log.d(TAG, "intercept: 无网络");
+                int maxAge=60*60*24*7;//一周
+                return originResponse.newBuilder()
+                        .removeHeader("Pragma")
+                        .removeHeader("Cache-Control")
+                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxAge)
+                        .build();
             }
-        };
-    }
+        }
+    };
+
+
 
 
     private void initApi(){
-        initInterceptor();
         initCache();
         OkHttpClient okHttpClient=new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request=chain.request();
+                        if (!NetWorkUtil.isNetWorkAvailable(MyApplication.getContext())){
+                           request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build();
+                        }
+                        return chain.proceed(request);
+                    }
+                })
                 .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
-                .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                 .cache(cache)
                 .build();
        retrofit=getApi(baseUrl,okHttpClient);

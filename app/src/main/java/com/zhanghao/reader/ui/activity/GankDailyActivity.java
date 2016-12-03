@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
-
 import com.zhanghao.reader.R;
 import com.zhanghao.reader.bean.GankDailyAllItem;
 import com.zhanghao.reader.bean.GankDisplayItem;
@@ -17,7 +16,6 @@ import com.zhanghao.reader.bean.ItemSection;
 import com.zhanghao.reader.contract.GankDailyAllContract;
 import com.zhanghao.reader.presenter.GankDailyAllPresenterImpl;
 import com.zhanghao.reader.ui.adapter.GankDailyAllAdapter;
-import com.zhanghao.reader.ui.adapter.base.LoadMoreWrapper;
 import com.zhanghao.reader.ui.adapter.base.MultiItemTypeAdapter;
 import com.zhanghao.reader.utils.ActivityUtil;
 

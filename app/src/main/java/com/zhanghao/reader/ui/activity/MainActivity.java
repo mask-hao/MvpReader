@@ -7,9 +7,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.zhanghao.reader.R;
 import com.zhanghao.reader.utils.FragmentUtil;
@@ -33,7 +35,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     DrawerLayout drawerMain;
     private ActionBarDrawerToggle toggle;
     private FragmentUtil changeUtil;
-
+    private long exitTime=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,12 +90,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onBackPressed() {
-        if (drawerMain != null) {
-            if (drawerMain.isDrawerOpen(GravityCompat.START))
+        if (drawerMain != null&&drawerMain.isDrawerOpen(GravityCompat.START)){
                 drawerMain.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            doExitApp();
         }
 
+    }
+
+    private void doExitApp() {
+       if ((System.currentTimeMillis()-exitTime)>2000){
+           Toast.makeText(this,"再按一次图退出！",Toast.LENGTH_SHORT).show();
+           exitTime=System.currentTimeMillis();
+       }else
+           finish();
     }
 }
