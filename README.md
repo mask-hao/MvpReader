@@ -1,4 +1,4 @@
-仿造知乎日报+Gank客户端（个人学习项目）
+仿知乎日报+Gank客户端（个人学习项目）
 *总体架构:MVP+RxAndroid+Retrofit*
 ![截图1](https://github.com/mask-hao/MvpReader/blob/master/screenshot/pic1.png)
 ![截图2](https://github.com/mask-hao/MvpReader/blob/master/screenshot/pic2.png)
