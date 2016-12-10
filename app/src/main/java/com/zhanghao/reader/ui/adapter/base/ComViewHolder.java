@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.zhanghao.reader.R;
+import com.zhanghao.reader.contract.GankDailyAllContract;
+import com.zhanghao.reader.ui.view.GankPicTransformation;
 
 /**
  * Created by zhanghao on 2016/11/21.
@@ -72,7 +74,7 @@ public class ComViewHolder  extends RecyclerView.ViewHolder{
         return this;
     }
 
-    public ComViewHolder setText1(int viewId,String text){
+    public ComViewHolder setTextAutoAdapter(int viewId, String text){
         TextView textView=getView(viewId);
         ViewGroup.LayoutParams lp=textView.getLayoutParams();
         lp.height= ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -96,7 +98,8 @@ public class ComViewHolder  extends RecyclerView.ViewHolder{
         ImageView imageView=getView(viewId);
         Picasso.with(context)
                 .load(path)
-                .fit()
+                .placeholder(R.drawable.default_pic_content_image_loading_light)
+                .transform(new GankPicTransformation(imageView))
                 .into(imageView);
         return this;
     }

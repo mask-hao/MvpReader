@@ -2,13 +2,18 @@ package com.zhanghao.reader.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.zhanghao.reader.R;
@@ -24,10 +29,8 @@ import butterknife.ButterKnife;
  * Created by zhanghao on 2016/11/22.
  */
 
-public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentContract.View {
+public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentContract.View, View.OnClickListener {
     private static final String TAG = "ZhiHuContentActivity";
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.zhihu_content_vb)
     WebView zhihuContentWv;
     @BindView(R.id.content_top_iv)
@@ -36,21 +39,36 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
     TextView contentTitleTv;
     @BindView(R.id.content_clp)
     ContentLoadingProgressBar contentClp;
+    @BindView(R.id.content_nsl)
+    NestedScrollView contentNsl;
+    @BindView(R.id.share_bt)
+    FloatingActionButton shareBt;
     private ZhiHuContentContract.Presenter presenter;
     private String id;
+    private String title;
+    private String url;
 
+
+    @Override
+    protected int setContentLayout() {
+        return R.layout.zhihu_content;
+    }
+
+    @Override
+    protected boolean canBack() {
+        return true;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.zhihu_content);
         ButterKnife.bind(this);
-        initView();
+        setTitle("");
         initData();
+        initView();
     }
 
     private void initView() {
-        setUpToolBar("",toolbar, true, true);
         StatusBarUtil.setTransparent(this);
         WebSettings webSettings = zhihuContentWv.getSettings();
         webSettings.setAllowFileAccess(true);
@@ -64,18 +82,22 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
         webSettings.setDisplayZoomControls(false);
         webSettings.setLoadsImagesAutomatically(true);
         // zhihuContentWv.addJavascriptInterface(this,"");
+        shareBt.setOnClickListener(this);
+        new ZhiHuNewsContentPresenterImpl(this);
+        presenter.getZhiHuContent(id);
     }
 
     private void initData() {
         id = getIntent().getStringExtra("id");
         Log.d(TAG, "initData: " + id);
-        new ZhiHuNewsContentPresenterImpl(this);
-        presenter.getZhiHuContent(id);
+
     }
 
 
     @Override
     public void setUpZhiHuContent(ZhiHuContent zhiHuContent) {
+        title=zhiHuContent.getTitle();
+        url=zhiHuContent.getShare_url();
         Picasso.with(this)
                 .load(zhiHuContent.getImage())
                 .into(contentTopIv);
@@ -103,18 +125,18 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
 
     @Override
     public void showDialog() {
-       contentClp.show();
+        contentClp.show();
     }
 
     @Override
     public void hideDialog() {
-      contentClp.hide();
+        contentClp.hide();
     }
 
     @Override
     public void showError(Throwable error) {
         Log.d(TAG, "showError: " + error.getMessage());
-        showDia(error.getMessage());
+        Toast.makeText(this,error.getMessage(),Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -122,5 +144,12 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
         this.presenter = presenter;
     }
 
-
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.share_bt:
+                beginShare(title,url);
+                break;
+        }
+    }
 }

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.fragment_content)
@@ -36,10 +36,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private ActionBarDrawerToggle toggle;
     private FragmentUtil changeUtil;
     private long exitTime=0;
+
+    @Override
+    protected int setContentLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected boolean canBack() {
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
         initMenu();
@@ -47,8 +57,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void initView() {
-        //setSupportActionBar(toolbar);
-        setUpToolBar("",toolbar, true, true);
         toggle = new ActionBarDrawerToggle(this, drawerMain, toolbar, R.string.open, R.string.close);
         toggle.syncState();
         drawerMain.addDrawerListener(toggle);
@@ -62,8 +70,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         ArrayList<MainMenu> mainMenus = new ArrayList<>();
         mainMenus.add(MainMenu.ZHIHU);
         mainMenus.add(MainMenu.GANKDAILY);
-//        mainMenus.add(MainMenu.GANKANDROID);
-//        mainMenus.add(MainMenu.TEST);
         Menu menu = mainNav.getMenu();
         menu.clear();
         for (int i = 0; i < mainMenus.size(); i++) {

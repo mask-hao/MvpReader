@@ -1,17 +1,11 @@
 package com.zhanghao.reader.ui.adapter;
 
-import android.util.Log;
-
 import com.zhanghao.reader.R;
 import com.zhanghao.reader.bean.DisplayItem;
 import com.zhanghao.reader.bean.GankDailyItem;
-import com.zhanghao.reader.bean.GankPicItem;
-import com.zhanghao.reader.bean.GankVideoItem;
 import com.zhanghao.reader.ui.adapter.base.ComViewHolder;
 import com.zhanghao.reader.ui.adapter.base.ItemViewDelegate;
 import com.zhanghao.reader.utils.TimeUtils;
-
-import java.util.List;
 
 /**
  * Created by zhanghao on 2016/11/27.
@@ -20,6 +14,7 @@ import java.util.List;
 public class GankDailyDelegate implements ItemViewDelegate<DisplayItem>{
 
     private static final String TAG = "GankDailyDelegate";
+
 
     @Override
     public int getItemViewLayoutId() {
@@ -38,6 +33,6 @@ public class GankDailyDelegate implements ItemViewDelegate<DisplayItem>{
         String date= TimeUtils.getCurrentDate("yyyy-MM-dd","MM-dd",gankDailyItem.getDate());
         String title=gankDailyItem.getTitle();
         viewHolder.setGankImageResource(R.id.photo_iv,url);
-        viewHolder.setText1(R.id.photo_tv,date+"  "+title);
+        viewHolder.setTextAutoAdapter(R.id.photo_tv,date+"  "+title);
     }
 }

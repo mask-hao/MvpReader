@@ -11,7 +11,7 @@ import com.zhanghao.reader.ui.adapter.base.ItemViewDelegate;
  * Created by zhanghao on 2016/11/28.
  */
 
-public class GankDailyAllDelegate implements ItemViewDelegate<GankDisplayItem>{
+public class GankDailyAllDelegate implements ItemViewDelegate<GankDisplayItem> {
     @Override
     public int getItemViewLayoutId() {
         return R.layout.gankdaily_all_item;
@@ -27,6 +27,6 @@ public class GankDailyAllDelegate implements ItemViewDelegate<GankDisplayItem>{
 
     @Override
     public void convert(ComViewHolder viewHolder, GankDisplayItem gankDisplayItem, int position) {
-        viewHolder.setText(R.id.gankdaily_all_tv," * "+gankDisplayItem.getDesc());
+        viewHolder.setText(R.id.gankdaily_all_tv, " * " + gankDisplayItem.getDesc());
     }
 }

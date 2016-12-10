@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  * Created by zhanghao on 2016/11/26.
  */
 
-public class GankContentActivity extends BaseActivity {
+public class GankContentActivity extends BaseActivity{
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.gank_content_wb)
@@ -31,11 +31,21 @@ public class GankContentActivity extends BaseActivity {
     private String title;
 
     @Override
+    protected int setContentLayout() {
+        return R.layout.gankio_content;
+    }
+
+    @Override
+    protected boolean canBack() {
+        return true;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gankio_content);
         ButterKnife.bind(this);
         initData();
+        setTitle(title);
         initView();
     }
 
@@ -46,7 +56,6 @@ public class GankContentActivity extends BaseActivity {
     }
 
     private void initView() {
-        setUpToolBar(title,toolbar, true, true);
         WebSettings webSettings = gankContentWb.getSettings();
         webSettings.setAppCachePath(getApplicationContext().getDir("cache", 0).getPath());
         if (!NetWorkUtil.isNetWorkAvailable(this))

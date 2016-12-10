@@ -1,30 +1,32 @@
 package com.zhanghao.reader.ui.fragment;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.zhanghao.reader.R;
 import com.zhanghao.reader.bean.DisplayItem;
 import com.zhanghao.reader.bean.ItemSection;
 import com.zhanghao.reader.bean.ZhiHuStories;
 import com.zhanghao.reader.bean.ZhiHuTopStories;
 import com.zhanghao.reader.contract.ZhiHuDailyContract;
+import com.zhanghao.reader.ui.adapter.ZhiHuAdapter;
 import com.zhanghao.reader.ui.adapter.base.LoadMoreWrapper;
 import com.zhanghao.reader.ui.adapter.base.MultiItemTypeAdapter;
 import com.zhanghao.reader.ui.adapter.base.MyHeaderAndFooterWrapper;
-import com.zhanghao.reader.ui.adapter.ZhiHuAdapter;
 import com.zhanghao.reader.ui.view.RollViewPager;
 import com.zhanghao.reader.utils.ActivityUtil;
 import com.zhanghao.reader.utils.CommonUtil;
@@ -40,7 +42,7 @@ import butterknife.ButterKnife;
  * Created by zhanghao on 2016/11/20.
  */
 
-public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View,MultiItemTypeAdapter.OnItemClickListener {
+public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, MultiItemTypeAdapter.OnItemClickListener {
     private static final String TAG = "ZhiHuFragment";
     View root;
     @BindView(R.id.zhihu_recycler)
@@ -54,8 +56,9 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View,M
     private MyHeaderAndFooterWrapper headerFooterWrapper;
     private ZhiHuDailyContract.Presenter presenter;
     private ProgressDialog dialog;
-    private  String now;
-    private List<DisplayItem> listAll=new ArrayList<>();
+    private String now;
+    private List<DisplayItem> listAll = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,9 +110,9 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View,M
     @Override
     public void setUpZhiHuNewsLastestList(List<ZhiHuStories> storiesBeanList, List<ZhiHuTopStories> storiesBeanTopList) {
 
-        if (refreshLayout.isRefreshing()){
+        if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
-            now=TimeUtils.getCurrentDate("yyyyMMdd");
+            now = TimeUtils.getCurrentDate("yyyyMMdd");
         }
 
 
@@ -129,7 +132,7 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View,M
         listAll.add(new ItemSection("今日热文"));
         listAll.addAll(storiesBeanList);
 
-        zhiHuAdapter = new ZhiHuAdapter(getContext(),listAll);
+        zhiHuAdapter = new ZhiHuAdapter(getContext(), listAll);
 
         headerFooterWrapper = new MyHeaderAndFooterWrapper(zhiHuAdapter);
 
@@ -143,7 +146,7 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View,M
             @Override
             public void OnLoadMore() {
                 loadMoreWrapper.setIsLoadMore(true);
-                now = TimeUtils.getBeforeDate("yyyyMMdd",now);
+                now = TimeUtils.getBeforeDate("yyyyMMdd", now);
                 presenter.getDailyNews(now);
             }
         });
@@ -151,11 +154,9 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View,M
     }
 
 
-
-
     @Override
     public void UpDateZhiHuNewsList(List<ZhiHuStories> storiesBeanList) {
-        listAll.add(new ItemSection(TimeUtils.getSessionDate("yyyyMMdd",now)));
+        listAll.add(new ItemSection(TimeUtils.getSessionDate("yyyyMMdd", now)));
         listAll.addAll(storiesBeanList);
         // TODO: 2016/11/24 使用diffUtils Android 7.0 新特性
         loadMoreWrapper.notifyDataSetChanged();
@@ -175,7 +176,7 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View,M
     @Override
     public void showError(Throwable error) {
         ///Log.d(TAG, error.getCause().getMessage());
-        Toast.makeText(getContext(), "加载出错，请重试！\n" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "加载出错，请重试！\n", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -218,7 +219,6 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View,M
     }
 
 
-
     /**
      * 初始化顶部轮播小圆点
      *
@@ -250,7 +250,7 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View,M
     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
         int RealPosition = position - 1;
         if (listAll.get(RealPosition) instanceof ItemSection) return;
-        String id = String.valueOf(((ZhiHuStories)listAll.get(RealPosition)).getId());
+        String id = String.valueOf(((ZhiHuStories) listAll.get(RealPosition)).getId());
         ActivityUtil.toZhiHuNewContent(getContext(), id);
     }
 }

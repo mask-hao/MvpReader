@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
+
 import com.zhanghao.reader.R;
 import com.zhanghao.reader.bean.GankDailyAllItem;
 import com.zhanghao.reader.bean.GankDisplayItem;
@@ -30,8 +31,6 @@ import butterknife.ButterKnife;
  */
 
 public class GankDailyActivity extends BaseActivity implements GankDailyAllContract.View, MultiItemTypeAdapter.OnItemClickListener {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.gankdaily_rv)
     RecyclerView gankdailyRv;
     @BindView(R.id.gank_activity_content_cp)
@@ -42,18 +41,27 @@ public class GankDailyActivity extends BaseActivity implements GankDailyAllContr
     private GankDailyAllAdapter gankDailyAllAdapter;
 
     @Override
+    protected int setContentLayout() {
+        return R.layout.gank_daily_activity;
+    }
+
+    @Override
+    protected boolean canBack() {
+        return true;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gank_daily_activity);
         ButterKnife.bind(this);
         initData();
+        setTitle(date);
         initView();
     }
 
     private void initView() {
-        setUpToolBar(date, toolbar, true, true);
         gankdailyRv.setLayoutManager(new LinearLayoutManager(this));
-        presenter=new GankDailyAllPresenterImpl(this);
+        presenter = new GankDailyAllPresenterImpl(this);
         presenter.getGankDailyAll(date, true);
     }
 
@@ -65,7 +73,7 @@ public class GankDailyActivity extends BaseActivity implements GankDailyAllContr
     @Override
     public void setUpGankDailyAll(GankDailyAllItem gankDailyAll, boolean firstload) {
         initListAll(gankDailyAll);
-        gankDailyAllAdapter = new GankDailyAllAdapter(this,gankListAll);
+        gankDailyAllAdapter = new GankDailyAllAdapter(this, gankListAll);
         gankdailyRv.setAdapter(gankDailyAllAdapter);
         gankDailyAllAdapter.setOnItemClickListener(this);
     }
@@ -76,20 +84,20 @@ public class GankDailyActivity extends BaseActivity implements GankDailyAllContr
      * @param gankDailyAll
      */
     private void initListAll(GankDailyAllItem gankDailyAll) {
-        GankDailyAllItem.ResultsBean results=gankDailyAll.getResults();
-        if (results.getAndroid()!=null){
+        GankDailyAllItem.ResultsBean results = gankDailyAll.getResults();
+        if (results.getAndroid() != null) {
             gankListAll.add(new ItemSection("Android"));
             gankListAll.addAll(results.getAndroid());
         }
-        if (results.getIOS()!=null){
+        if (results.getIOS() != null) {
             gankListAll.add(new ItemSection("iOS"));
             gankListAll.addAll(results.getIOS());
         }
-        if (results.get前端()!=null){
+        if (results.get前端() != null) {
             gankListAll.add(new ItemSection("前端"));
             gankListAll.addAll(results.get前端());
         }
-        if (results.get拓展资源()!=null){
+        if (results.get拓展资源() != null) {
             gankListAll.add(new ItemSection("拓展资源"));
             gankListAll.addAll(results.get拓展资源());
         }
@@ -108,7 +116,7 @@ public class GankDailyActivity extends BaseActivity implements GankDailyAllContr
 
     @Override
     public void showError(Throwable e) {
-        Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -125,10 +133,10 @@ public class GankDailyActivity extends BaseActivity implements GankDailyAllContr
 
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-        GankDisplayItem displayItem=gankListAll.get(position);
+        GankDisplayItem displayItem = gankListAll.get(position);
         if (displayItem instanceof ItemSection) return;
-        String url=gankListAll.get(position).getUrl();
-        String title=gankListAll.get(position).getDesc();
-        ActivityUtil.toGankIoContent(this,url,title);
+        String url = gankListAll.get(position).getUrl();
+        String title = gankListAll.get(position).getDesc();
+        ActivityUtil.toGankIoContent(this, url, title);
     }
 }

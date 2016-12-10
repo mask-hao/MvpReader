@@ -8,7 +8,7 @@ import java.util.List;
  * Created by zhanghao on 2016/11/28.
  */
 
-public class GankDailyAllItem{
+public class GankDailyAllItem {
 
     /**
      * category : ["Android","休息视频","拓展资源","福利","前端","iOS"]
@@ -110,7 +110,7 @@ public class GankDailyAllItem{
             this.福利 = 福利;
         }
 
-        public static class AndroidBean implements GankDisplayItem{
+        public static class AndroidBean implements GankDisplayItem {
             /**
              * _id : 583129bf421aa929ac960afc
              * createdAt : 2016-11-20T12:42:39.884Z
@@ -221,7 +221,7 @@ public class GankDailyAllItem{
             }
         }
 
-        public static class IOSBean  implements GankDisplayItem{
+        public static class IOSBean implements GankDisplayItem {
             /**
              * _id : 583ba071421aa9710cf54c40
              * createdAt : 2016-11-28T11:11:45.849Z
@@ -322,7 +322,7 @@ public class GankDailyAllItem{
             }
         }
 
-        public static class 休息视频Bean  implements GankDisplayItem {
+        public static class 休息视频Bean implements GankDisplayItem {
             /**
              * _id : 5831b1f4421aa929ac960b00
              * createdAt : 2016-11-20T22:23:48.641Z
@@ -423,7 +423,7 @@ public class GankDailyAllItem{
             }
         }
 
-        public static class 前端Bean  implements GankDisplayItem {
+        public static class 前端Bean implements GankDisplayItem {
             /**
              * _id : 583b9a54421aa971108b658e
              * createdAt : 2016-11-28T10:45:40.970Z
@@ -534,7 +534,7 @@ public class GankDailyAllItem{
             }
         }
 
-        public static class 拓展资源Bean  implements GankDisplayItem {
+        public static class 拓展资源Bean implements GankDisplayItem {
             /**
              * _id : 5838322e421aa91cb7afe7ed
              * createdAt : 2016-11-25T20:44:30.469Z
@@ -645,7 +645,7 @@ public class GankDailyAllItem{
             }
         }
 
-        public static class 福利Bean  implements GankDisplayItem {
+        public static class 福利Bean implements GankDisplayItem {
             /**
              * _id : 583b8285421aa9710cf54c3b
              * createdAt : 2016-11-28T09:04:05.479Z

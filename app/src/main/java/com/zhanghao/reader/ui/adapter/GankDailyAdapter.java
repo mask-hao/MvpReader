@@ -1,18 +1,16 @@
 package com.zhanghao.reader.ui.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.zhanghao.reader.R;
 import com.zhanghao.reader.bean.DisplayItem;
 import com.zhanghao.reader.bean.GankDailyItem;
 import com.zhanghao.reader.ui.adapter.base.ComAdapter;
 import com.zhanghao.reader.ui.adapter.base.ComViewHolder;
+import com.zhanghao.reader.utils.DensityUtil;
 import com.zhanghao.reader.utils.TimeUtils;
 
 import java.util.List;
@@ -23,9 +21,25 @@ import java.util.List;
 
 public class GankDailyAdapter extends ComAdapter<DisplayItem>{
 
+//    private float width,height;
+//    private float sWidth;
+//    private DensityUtil densityUtil;
+
     public GankDailyAdapter(Context mContext, int mLayoutId, List<DisplayItem> mDatas) {
         super(mContext, mLayoutId, mDatas);
+//        densityUtil=new DensityUtil(mContext);
+//        initWH();
+
     }
+
+//    private void initWH() {
+//        sWidth=densityUtil.getScreenWidth();
+//        float card_margin=mContext.getResources().getDimension(R.dimen.card_margin);//dp
+//        float image_height=mContext.getResources().getDimension(R.dimen.gank_photo_height);//dp
+//        float subW=densityUtil.dip2px(card_margin*4);
+//        width=(sWidth-subW)/2;
+//        height=densityUtil.dip2px(image_height);
+//    }
 
     @Override
     public void convert(final ComViewHolder comViewHolder, DisplayItem displayItem, final int position) {
@@ -38,7 +52,7 @@ public class GankDailyAdapter extends ComAdapter<DisplayItem>{
         String date= TimeUtils.getCurrentDate("yyyy-MM-dd","MM-dd",gankDailyItem.getDate());
         String title=gankDailyItem.getTitle();
         comViewHolder.setGankImageResource(R.id.photo_iv,url);
-        comViewHolder.setText1(R.id.photo_tv,date+"  "+title);
+        comViewHolder.setTextAutoAdapter(R.id.photo_tv,date+"  "+title);
 
 
         if (onItemClickListener!=null){

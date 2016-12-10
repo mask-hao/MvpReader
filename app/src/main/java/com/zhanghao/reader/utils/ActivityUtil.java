@@ -2,9 +2,11 @@ package com.zhanghao.reader.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.animation.Animation;
 
 import com.zhanghao.reader.ui.activity.GankContentActivity;
 import com.zhanghao.reader.ui.activity.GankDailyActivity;
+import com.zhanghao.reader.ui.activity.MainActivity;
 import com.zhanghao.reader.ui.activity.PhotoActivity;
 import com.zhanghao.reader.ui.activity.ZhiHuContentActivity;
 
@@ -41,4 +43,7 @@ public class ActivityUtil {
     }
 
 
+    public static void toMainActivity(Context context) {
+        context.startActivity(new Intent(context, MainActivity.class));
+    }
 }

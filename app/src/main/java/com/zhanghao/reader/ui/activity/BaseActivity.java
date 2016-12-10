@@ -1,48 +1,72 @@
 package com.zhanghao.reader.ui.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.zhanghao.reader.R;
 import com.zhanghao.reader.contract.BaseView;
 
 /**
  * Created by zhanghao on 2016/11/20.
  */
 
-public class BaseActivity extends AppCompatActivity{
+public abstract class BaseActivity extends AppCompatActivity{
+    private static final String TAG = "BaseActivity";
+    private Toolbar toolbar;
+    private AppBarLayout appBarLayout;
+    protected abstract int setContentLayout();
+    protected abstract boolean canBack();
 
-    private ProgressDialog progressDialog;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(setContentLayout());
+        try {
+            toolbar= (Toolbar) findViewById(R.id.toolbar);
+            appBarLayout= (AppBarLayout) findViewById(R.id.appbar_layout);
+            setUpToolBar();
+        }catch (NullPointerException e){
+            Log.e(TAG, "onCreate: "+"the BaseActivity must be contain a toolbar and appbar");
+        }
+    }
 
-    public void setUpToolBar(String toolbarTitle,Toolbar toolbar, boolean HomeButtonEnable, boolean HomeAsUpEnable){
-        toolbar.setTitle(toolbarTitle);
+
+    protected void setUpToolBar(){
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(HomeButtonEnable);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(HomeAsUpEnable);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-    }
+        if (canBack()){
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
-    protected void showDia(String massage){
-        progressDialog=new ProgressDialog(this);
-        progressDialog.setMessage(massage);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        }
     }
 
 
-    protected void hideDia(){
-        if (progressDialog!=null)
-            progressDialog.dismiss();
+    protected void beginShare(String title,String url){
+        Intent intent=new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT,title+url+"\r\n(Reader测试)");
+        intent.setType("text/plain");
+        startActivity(Intent.createChooser(intent,"分享到..."));
     }
 
-    protected void showErr(String message){
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }

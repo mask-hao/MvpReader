@@ -32,16 +32,25 @@ public class PhotoActivity extends BaseActivity{
     PhotoViewAttacher photoViewAttacher;
 
     @Override
+    protected int setContentLayout() {
+        return R.layout.photo_display;
+    }
+
+    @Override
+    protected boolean canBack() {
+        return true;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.photo_display);
         ButterKnife.bind(this);
         initData();
         initView();
+        setTitle("");
     }
 
     private void initView() {
-        setUpToolBar("",toolbar,true,true);
         Picasso.with(this).load(url).into(photoIv);
         setupPhotoAttacher();
     }
