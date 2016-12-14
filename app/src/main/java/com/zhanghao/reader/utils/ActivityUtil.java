@@ -8,6 +8,7 @@ import com.zhanghao.reader.ui.activity.GankContentActivity;
 import com.zhanghao.reader.ui.activity.GankDailyActivity;
 import com.zhanghao.reader.ui.activity.MainActivity;
 import com.zhanghao.reader.ui.activity.PhotoActivity;
+import com.zhanghao.reader.ui.activity.SettingActivity;
 import com.zhanghao.reader.ui.activity.ZhiHuContentActivity;
 
 /**
@@ -28,7 +29,6 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
-
     public static void toPhotoActivity(Context context,String url){
         Intent intent=new Intent(context, PhotoActivity.class);
         intent.putExtra("url",url);
@@ -42,8 +42,11 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
-
     public static void toMainActivity(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
+    }
+
+    public static void toSettingActivity(Context context) {
+        context.startActivity(new Intent(context, SettingActivity.class));
     }
 }

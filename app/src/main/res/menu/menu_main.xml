@@ -4,8 +4,7 @@
         android:id="@+id/settings"
         android:checkableBehavior="none">
         <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/ic_settings_black_24dp"
-            android:title="@string/app_name"/>
+            android:id="@+id/menu_night"
+            android:title="@string/nigth_mode"/>
     </group>
 </menu>

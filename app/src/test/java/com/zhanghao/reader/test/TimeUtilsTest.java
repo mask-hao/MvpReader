@@ -18,10 +18,10 @@ public class TimeUtilsTest {
 
     @Test
     public void getBeforeDate() throws Exception {
-        System.out.println(TimeUtils.getBeforeDate("20161122"));
-        System.out.println(TimeUtils.getBeforeDate("20161122"));
-        System.out.println(TimeUtils.getBeforeDate("20160101"));
-        System.out.println(TimeUtils.getBeforeDate("20160301"));
+        //System.out.println(TimeUtils.getBeforeDate("20161122"));
+        //System.out.println(TimeUtils.getBeforeDate("20161122"));
+       // System.out.println(TimeUtils.getBeforeDate("20160101"));
+       // System.out.println(TimeUtils.getBeforeDate("20160301"));
     }
 
 }

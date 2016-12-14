@@ -1,40 +1,54 @@
 package com.zhanghao.reader.ui.fragment;
-
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.zhanghao.reader.R;
 import com.zhanghao.reader.bean.DisplayItem;
 import com.zhanghao.reader.bean.ItemSection;
+import com.zhanghao.reader.bean.ThemeChangeMessage;
+import com.zhanghao.reader.bean.ThemeViewPool;
 import com.zhanghao.reader.bean.ZhiHuStories;
 import com.zhanghao.reader.bean.ZhiHuTopStories;
 import com.zhanghao.reader.contract.ZhiHuDailyContract;
+import com.zhanghao.reader.ui.activity.MainActivity;
 import com.zhanghao.reader.ui.adapter.ZhiHuAdapter;
 import com.zhanghao.reader.ui.adapter.base.LoadMoreWrapper;
 import com.zhanghao.reader.ui.adapter.base.MultiItemTypeAdapter;
 import com.zhanghao.reader.ui.adapter.base.MyHeaderAndFooterWrapper;
+import com.zhanghao.reader.ui.listener.RefreshUIListener;
 import com.zhanghao.reader.ui.view.RollViewPager;
 import com.zhanghao.reader.utils.ActivityUtil;
 import com.zhanghao.reader.utils.CommonUtil;
 import com.zhanghao.reader.utils.TimeUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -42,7 +56,7 @@ import butterknife.ButterKnife;
  * Created by zhanghao on 2016/11/20.
  */
 
-public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, MultiItemTypeAdapter.OnItemClickListener {
+public class ZhiHuFragment extends BaseFragment implements ZhiHuDailyContract.View, MultiItemTypeAdapter.OnItemClickListener{
     private static final String TAG = "ZhiHuFragment";
     View root;
     @BindView(R.id.zhihu_recycler)
@@ -51,6 +65,9 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, 
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.content_pr)
     ContentLoadingProgressBar contentPr;
+    @BindView(R.id.zhihu_frag_cdl)
+    CoordinatorLayout zhihuFragCdl;
+    private RollViewPager rollViewPager;
     private ZhiHuAdapter zhiHuAdapter;
     private LoadMoreWrapper loadMoreWrapper;
     private MyHeaderAndFooterWrapper headerFooterWrapper;
@@ -58,6 +75,14 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, 
     private ProgressDialog dialog;
     private String now;
     private List<DisplayItem> listAll = new ArrayList<>();
+
+    private List<CoordinatorLayout> coordinatorLayoutList=new ArrayList<>();
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
@@ -76,6 +101,7 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, 
     @Override
     public void onResume() {
         super.onResume();
+        if (rollViewPager != null) rollViewPager.stopRoll();
     }
 
     @Override
@@ -89,6 +115,9 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, 
     }
 
     private void initView() {
+
+        coordinatorLayoutList.add(zhihuFragCdl);
+
         refreshLayout.setColorSchemeResources(
                 R.color.colorAccent,
                 R.color.colorAccent,
@@ -105,7 +134,6 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, 
         zhihuRecycler.setItemAnimator(new DefaultItemAnimator());
         presenter.getLatestZhiHuNews(false);
     }
-
 
     @Override
     public void setUpZhiHuNewsLastestList(List<ZhiHuStories> storiesBeanList, List<ZhiHuTopStories> storiesBeanTopList) {
@@ -125,7 +153,6 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, 
             images.add(zhiHuTopStories.getImage());
             ids.add(zhiHuTopStories.getId());
         }
-
 
         View ZhiHuHeader = initZhihuHeader(storiesBeanTopList);//获取header
 
@@ -152,7 +179,6 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, 
         });
         zhiHuAdapter.setOnItemClickListener(this);
     }
-
 
     @Override
     public void UpDateZhiHuNewsList(List<ZhiHuStories> storiesBeanList) {
@@ -196,7 +222,7 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, 
             FrameLayout flTop = (FrameLayout) headerView.findViewById(R.id.fl_top); // 放ViewPager的framelayout
             LinearLayout LlDots = (LinearLayout) headerView.findViewById(R.id.ll_dots);// 放小圆点的linerlayout
             // 初始化viewpager，小圆点
-            RollViewPager rollViewPager = new RollViewPager(getContext(), initDots(LlDots, storiesBeanList.size()),
+            rollViewPager = new RollViewPager(getContext(), initDots(LlDots, storiesBeanList.size()),
                     R.drawable.point_focured,
                     R.drawable.point_nomal, new RollViewPager.OnPagerClickCallback() {
                 @Override
@@ -210,6 +236,7 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, 
 
             rollViewPager.setTopStories(storiesBeanList);
             rollViewPager.startRoll();
+
             // 将viewpager放进去
             flTop.removeAllViews();
             flTop.addView(rollViewPager);
@@ -217,7 +244,6 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, 
         }
         return null;
     }
-
 
     /**
      * 初始化顶部轮播小圆点
@@ -253,4 +279,95 @@ public class ZhiHuFragment extends Fragment implements ZhiHuDailyContract.View, 
         String id = String.valueOf(((ZhiHuStories) listAll.get(RealPosition)).getId());
         ActivityUtil.toZhiHuNewContent(getContext(), id);
     }
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ThemeChangeMessage message){
+        if (message.isChange()) {
+            Log.e("xiaoxi", " zhihu onMessageEvent: "+message.isChange());
+            RefreshUI();
+        }
+    }
+
+
+    public void RefreshUI(){
+
+        Log.e("xiaoxi", "zhihu onMessageEvent: ");
+
+
+        TypedValue backgroundColor=new TypedValue();
+        TypedValue cardBackgroundColor=new TypedValue();
+        TypedValue cdlBackgroundColor=new TypedValue();
+        TypedValue textColor=new TypedValue();
+        TypedValue toolBarColor=new TypedValue();
+        TypedValue statusBarColor=new TypedValue();
+        Resources.Theme theme= getActivity().getTheme();
+        Resources resources=getResources();
+        theme.resolveAttribute(R.attr.colorBackground,backgroundColor,true);
+        theme.resolveAttribute(R.attr.colorCardBackground,cardBackgroundColor,true);
+        theme.resolveAttribute(R.attr.colorTextView,textColor,true);
+        theme.resolveAttribute(R.attr.colorCdlBackBackground,cdlBackgroundColor,true);
+        theme.resolveAttribute(R.attr.colorPrimary,toolBarColor,true);
+        theme.resolveAttribute(R.attr.colorPrimaryDark,statusBarColor,true);
+
+
+        for(CoordinatorLayout coordinatorLayout:coordinatorLayoutList)
+           coordinatorLayout.setBackgroundResource(cdlBackgroundColor.resourceId);
+
+
+        int childCount=zhihuRecycler.getChildCount();
+        for (int i=0;i<childCount;i++){
+            ViewGroup childView= (ViewGroup) zhihuRecycler.getChildAt(i);
+
+            String name=childView.getClass().getSimpleName();
+            Log.d(TAG, "RefreshUI: Name : " +name);
+            if (childView instanceof LinearLayout){
+
+                LinearLayout linearLayout= (LinearLayout) childView.findViewById(R.id.zhihu_section_ll0);
+                linearLayout.setBackgroundResource(cdlBackgroundColor.resourceId);
+
+                TextView textView= (TextView) childView.findViewById(R.id.sec_tv);
+                textView.setBackgroundResource(cdlBackgroundColor.resourceId);
+                textView.setTextColor(getResources().getColor(textColor.resourceId));
+            }
+            if (childView instanceof RelativeLayout){
+                RelativeLayout relativeLayout0= (RelativeLayout) childView.findViewById(R.id.zhihu_item_rl0);
+                relativeLayout0.setBackgroundResource(cdlBackgroundColor.resourceId);
+
+                CardView cardView= (CardView) childView.findViewById(R.id.zhihu_item_cardview);
+                cardView.setCardBackgroundColor(cdlBackgroundColor.resourceId);
+
+                RelativeLayout relativeLayout= (RelativeLayout) childView.findViewById(R.id.zhihu_item_rl1);
+                relativeLayout.setBackgroundResource(backgroundColor.resourceId);
+
+                TextView textView= (TextView) childView.findViewById(R.id.zhihu_title);
+                textView.setBackgroundResource(cardBackgroundColor.resourceId);
+                textView.setTextColor(resources.getColor(textColor.resourceId));
+            }
+        }
+
+        Class<RecyclerView> recyclerViewClass=RecyclerView.class;
+        try {
+            Field declaredField=recyclerViewClass.getDeclaredField("mRecycler");
+            declaredField.setAccessible(true);
+            Method declaredMethod=Class.forName(RecyclerView.Recycler.class.getName()).getDeclaredMethod("clear",(Class<?>[]) new Class[0]);
+            declaredMethod.invoke(declaredField.get(zhihuRecycler),new Object[0]);
+            RecyclerView.RecycledViewPool recycledViewPool=zhihuRecycler.getRecycledViewPool();
+            recycledViewPool.clear();
+        }catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 }

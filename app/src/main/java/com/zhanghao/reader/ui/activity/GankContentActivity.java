@@ -21,8 +21,6 @@ import butterknife.ButterKnife;
  */
 
 public class GankContentActivity extends BaseActivity{
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.gank_content_wb)
     WebView gankContentWb;
     @BindView(R.id.gank_pg)

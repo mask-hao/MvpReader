@@ -42,7 +42,7 @@ public class GankIOPresenterImplTest {
     public void getGankDaliyTest() throws Exception {
         verify(view).setPresenter(presenter);
         TestSubscriber<GankItem> testSubscriber=TestSubscriber.create();
-        gankService.getGankDaliy("iOS","11/19").subscribe(testSubscriber);
+       // gankService.getGankDaliy("iOS","11/19").subscribe(testSubscriber);
         List<GankItem.ResultsBean> gankItemList=testSubscriber.getOnNextEvents().get(0).getResults();
         for (GankItem.ResultsBean resultsBean:gankItemList)
             System.out.println(resultsBean.toString());

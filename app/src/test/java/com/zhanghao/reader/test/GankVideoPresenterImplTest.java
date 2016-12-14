@@ -43,7 +43,7 @@ public class GankVideoPresenterImplTest {
     public void getGankVideoDily() throws Exception {
         verify(view).setPresenter(presenter);
         TestSubscriber<GankVideoItem> testSubscriber=TestSubscriber.create();
-        gankService.getGankVideoDaliy("11/19").subscribe(testSubscriber);
+        //gankService.getGankVideoDaliy("11/19").subscribe(testSubscriber);
         List<GankVideoItem.ResultsBean> resultsBeenList=testSubscriber.getOnNextEvents().get(0).getResults();
         for (GankVideoItem.ResultsBean resultsBean:resultsBeenList)
             System.out.println(resultsBean.toString());

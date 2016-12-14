@@ -1,5 +1,9 @@
 package com.zhanghao.reader.ui.adapter;
 
+import android.support.v7.widget.CardView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.zhanghao.reader.R;
 import com.zhanghao.reader.bean.DisplayItem;
 import com.zhanghao.reader.bean.ZhiHuStories;
@@ -26,5 +30,6 @@ public class ZhiHuItemDelegate implements ItemViewDelegate<DisplayItem>{
         ZhiHuStories zhiHuStories= (ZhiHuStories) displayItem;
         viewHolder.setImageResource(R.id.zhihu_img,zhiHuStories.getImages().get(0));
         viewHolder.setText(R.id.zhihu_title,zhiHuStories.getTitle());
+        //// TODO: 2016/12/11 add view to viewList
     }
 }

@@ -1,5 +1,7 @@
 package com.zhanghao.reader.ui.activity;
 
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -63,13 +66,17 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        //setAppBarAlpha(0.7f);
         setTitle("");
         initData();
         initView();
     }
 
     private void initView() {
-        StatusBarUtil.setTransparent(this);
+       // StatusBarUtil.setTransparent(this);
+        if (dayNightUtil.isNight())
+            zhihuContentWv.setBackgroundColor(getResources().getColor(R.color.md_blue_grey_900));
+
         WebSettings webSettings = zhihuContentWv.getSettings();
         webSettings.setAllowFileAccess(true);
         webSettings.setAppCachePath(getApplicationContext().getDir("cache", 0).getPath());
@@ -102,25 +109,36 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
                 .load(zhiHuContent.getImage())
                 .into(contentTopIv);
         contentTitleTv.setText(zhiHuContent.getTitle());
+        setTitle(zhiHuContent.getTitle());
         loadHtml(zhiHuContent.getBody());
     }
 
     private void loadHtml(String body) {
         StringBuilder htmlSb = new StringBuilder("<!doctype html>\n<html><head>\n<meta charset=\"utf-8\">\n" +
                 "\t<meta name=\"viewport\" content=\"width=device-width,user-scalable=no\">");
-        String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">\n";
 
-        htmlSb.append(css)
-                .append("</head><body className=\"\"")
-                .append(" >")
-                .append(body);
-        htmlSb.append("</body></html>");
-        String html = htmlSb.toString();
+        // TODO: 2016/12/13 夜间模式的调整
 
-        html = html.replace("<div class=\"img-place-holder\">", "");
-        Log.e("html1", html);
-        Log.e("html2", html);
-        zhihuContentWv.loadDataWithBaseURL("x-data://base", html, "text/html", "UTF-8", null);
+        String cssDay = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">\n";
+
+        String cssNight = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/newsNight.css\" type=\"text/css\">\n";
+
+        if (dayNightUtil.isNight()){
+            htmlSb.append(cssNight);
+        }
+        if (dayNightUtil.isDay()){
+            htmlSb.append(cssDay);
+        }
+       htmlSb.append("</head><body className=\"\"")
+             .append(" >")
+             .append(body);
+       htmlSb.append("</body></html>");
+       String html = htmlSb.toString();
+
+       html = html.replace("<div class=\"img-place-holder\">", "");
+       Log.e("html1", html);
+       Log.e("html2", html);
+       zhihuContentWv.loadDataWithBaseURL("x-data://base", html, "text/html", "UTF-8", null);
     }
 
     @Override
@@ -148,8 +166,11 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.share_bt:
-                beginShare(title,url);
+               // beginShare(title,url);
+                hideOrShowToolBar();
                 break;
         }
     }
+
+
 }

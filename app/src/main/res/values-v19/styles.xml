@@ -2,4 +2,14 @@
     <style name="AppTheme" parent="@style/BaseAppTheme">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
+    <style name="DayTheme" parent="@style/BaseDayTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+
+    </style>
+
+    <style name="NightTheme" parent="@style/BaseNightTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
 </resources>

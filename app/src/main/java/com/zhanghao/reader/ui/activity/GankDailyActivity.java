@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.zhanghao.reader.R;
@@ -76,6 +77,8 @@ public class GankDailyActivity extends BaseActivity implements GankDailyAllContr
         gankDailyAllAdapter = new GankDailyAllAdapter(this, gankListAll);
         gankdailyRv.setAdapter(gankDailyAllAdapter);
         gankDailyAllAdapter.setOnItemClickListener(this);
+
+
     }
 
     /**
@@ -139,4 +142,7 @@ public class GankDailyActivity extends BaseActivity implements GankDailyAllContr
         String title = gankListAll.get(position).getDesc();
         ActivityUtil.toGankIoContent(this, url, title);
     }
+
+
+
 }

@@ -16,6 +16,7 @@ import com.zhanghao.reader.presenter.GankDailyPresenterImpl;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
@@ -24,10 +25,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class PhotoActivity extends BaseActivity{
     private static final String TAG = "PhotoActivity";
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.photo_iv)
-    ImageView photoIv;
+    @BindView(R.id.photo_dis_iv)
+    PhotoView photoIv;
     private String url;
     PhotoViewAttacher photoViewAttacher;
 

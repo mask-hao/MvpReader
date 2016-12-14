@@ -6,4 +6,8 @@
     <dimen name="card_elevation">3dp</dimen>
     <dimen name="card_radius">3dp</dimen>
     <dimen name="gank_photo_height">200dp</dimen>
+    <dimen name="sectionTextSize">16sp</dimen>
+    <dimen name="listTextSize">18sp</dimen>
+    <dimen name="gankSectionTextSize">25sp</dimen>
+    <dimen name="settingMarginStart">10dp</dimen>
 </resources>

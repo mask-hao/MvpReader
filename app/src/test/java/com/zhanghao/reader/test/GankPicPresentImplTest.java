@@ -42,7 +42,7 @@ public class GankPicPresentImplTest {
     public void getGankPicDaliy() throws Exception {
          verify(view).setPresenter(presenter);
         TestSubscriber<GankPicItem> testSubscriber=TestSubscriber.create();
-        gankService.getGankPicDaliy("11/19").subscribe(testSubscriber);
+        //gankService.getGankPicDaliy("11/19").subscribe(testSubscriber);
         List<GankPicItem.ResultsBean> resultsBeenList=testSubscriber.getOnNextEvents().get(0).getResults();
         for (GankPicItem.ResultsBean resultsBean:resultsBeenList)
             System.out.println(resultsBean.toString());

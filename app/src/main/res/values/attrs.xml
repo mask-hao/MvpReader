@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorCdlBackBackground" format="color"/>
+    <attr name="colorBackground" format="color" />
+    <attr name="colorCardBackground" format="color"/>
+    <attr name="colorTextView" format="color" />
+</resources>

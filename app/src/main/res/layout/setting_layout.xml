@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/toolbar_include"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+        <TextView
+            android:layout_marginStart="@dimen/settingMarginStart"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/listTextSize"
+            android:text="@string/nigth_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Switch
+            android:checked="false"
+            android:id="@+id/nightTheme_st"
+            android:layout_marginEnd="@dimen/settingMarginStart"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <include
+        layout="@layout/dividerview_include"/>
+</LinearLayout>

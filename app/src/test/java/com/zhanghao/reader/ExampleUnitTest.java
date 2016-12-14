@@ -1,7 +1,6 @@
 package com.zhanghao.reader;
 import com.zhanghao.reader.api.zhihu.ZhiHuApi;
 import com.zhanghao.reader.api.zhihu.ZhiHuService;
-import com.zhanghao.reader.bean.ZhiHu;
 import com.zhanghao.reader.contract.ZhiHuDailyContract;
 import com.zhanghao.reader.presenter.ZhiHuNewsPresenterImpl;
 import com.zhanghao.reader.utils.TimeUtils;
