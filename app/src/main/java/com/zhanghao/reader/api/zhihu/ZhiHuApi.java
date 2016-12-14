@@ -10,6 +10,7 @@ import com.zhanghao.reader.utils.NetWorkUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
@@ -75,6 +76,7 @@ public class ZhiHuApi extends WebApi{
                 })
                 .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                 .cache(cache)
+                .connectTimeout(15, TimeUnit.SECONDS)
                 .build();
        retrofit=getApi(baseUrl,okHttpClient);
     }

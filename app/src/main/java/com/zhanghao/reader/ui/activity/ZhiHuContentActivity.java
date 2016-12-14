@@ -114,31 +114,56 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
     }
 
     private void loadHtml(String body) {
-        StringBuilder htmlSb = new StringBuilder("<!doctype html>\n<html><head>\n<meta charset=\"utf-8\">\n" +
-                "\t<meta name=\"viewport\" content=\"width=device-width,user-scalable=no\">");
+
+        StringBuilder stringBuilder=new StringBuilder("<head>\n" +
+                "\t<meta charset=\"utf-8\">\n" +
+                "\t<meta name=\"viewport\" content=\"width=device-width,user-scalable=no\">\n"
+        );
+
+
+        String css="<link rel=\"stylesheet\" href=\"file:///android_asset/css/share.css\" type=\"text/css\">\n";
+
+        String cssNight="<link rel=\"stylesheet\" href=\"file:///android_asset/css/shareNight.css\" type=\"text/css\">\n";
+
+//        String js="<link rel=\"stylesheet\" href=\"file:///android_asset/night.js\" type=\"text/css\">\n";
+//
+        if (dayNightUtil.isNight())
+            stringBuilder.append(cssNight);
+        else
+            stringBuilder.append(css);
+
+        stringBuilder
+                .append("</head>")
+                .append(body)
+                .append("</body></html>");
+
+//        StringBuilder htmlSb = new StringBuilder("<!doctype html>\n<html><head>\n<meta charset=\"utf-8\">\n" +
+//                "\t<meta name=\"viewport\" content=\"width=device-width,user-scalable=no\">");
 
         // TODO: 2016/12/13 夜间模式的调整
 
-        String cssDay = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">\n";
+//        String cssDay = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">\n";
+//
+//        String cssNight = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/newsNight.css\" type=\"text/css\">\n";
+//
+//        if (dayNightUtil.isNight()){
+//            htmlSb.append(cssNight);
+//        }
+//        if (dayNightUtil.isDay()){
+//            htmlSb.append(cssDay);
+//        }
+//       htmlSb.append("</head><body className=\"\"")
+//             .append(" >")
+//             .append(body);
+//       htmlSb.append("</body></html>");
+//       String html = htmlSb.toString();
+//
+//       html = html.replace("<div class=\"img-place-holder\">", "");
+//       Log.e("html1", html);
+//       Log.e("html2", html);
 
-        String cssNight = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/newsNight.css\" type=\"text/css\">\n";
-
-        if (dayNightUtil.isNight()){
-            htmlSb.append(cssNight);
-        }
-        if (dayNightUtil.isDay()){
-            htmlSb.append(cssDay);
-        }
-       htmlSb.append("</head><body className=\"\"")
-             .append(" >")
-             .append(body);
-       htmlSb.append("</body></html>");
-       String html = htmlSb.toString();
-
-       html = html.replace("<div class=\"img-place-holder\">", "");
-       Log.e("html1", html);
-       Log.e("html2", html);
-       zhihuContentWv.loadDataWithBaseURL("x-data://base", html, "text/html", "UTF-8", null);
+        Log.d(TAG, "loadHtml: "+stringBuilder.toString());
+       zhihuContentWv.loadDataWithBaseURL("x-data://base", stringBuilder.toString(), "text/html", "UTF-8", null);
     }
 
     @Override

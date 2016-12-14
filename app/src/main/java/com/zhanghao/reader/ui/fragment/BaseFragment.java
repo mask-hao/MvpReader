@@ -3,6 +3,7 @@ package com.zhanghao.reader.ui.fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 
@@ -15,13 +16,15 @@ import org.greenrobot.eventbus.EventBus;
  */
 
 public class BaseFragment extends Fragment{
-    protected TypedValue backgroundColor;//背景色
-    protected TypedValue cardBackgroundColor;//cardView背景色
-    protected TypedValue cdlBackgroundColor;//coordinatelayout背景色
-    protected TypedValue textColor;//TextView背景色
-    protected TypedValue toolBarColor; //toolbar背景色
-    protected TypedValue statusBarColor; //statusBar背景色
-    protected Resources resources;
+//    protected TypedValue backgroundColor;//背景色
+//    protected TypedValue cardBackgroundColor;//cardView背景色
+//    protected TypedValue cdlBackgroundColor;//coordinatelayout背景色
+//    protected TypedValue textColor;//TextView背景色
+//    protected TypedValue toolBarColor; //toolbar背景色
+//    protected TypedValue statusBarColor; //statusBar背景色
+//    protected Resources resources;
+
+    protected Snackbar snackbar=null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class BaseFragment extends Fragment{
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
+
 
     protected void initTypedValues(){
 //        backgroundColor=new TypedValue();

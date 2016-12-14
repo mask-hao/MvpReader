@@ -25,17 +25,12 @@ html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
 }
-
-
 body {
-
-      font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
-      background: #ff263238;
-      padding-top: 0;
-      margin: 0;\n
-      }
-
-
+  font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+//  background: #fff;
+  padding-top: 0;
+  margin: 0;
+}
 a:focus {
   outline: thin dotted;
 }
@@ -138,7 +133,7 @@ ol {
   padding-left: 20px;
 }
 .main-wrap {
-  max-width: 100%;
+  max-width: 1080px;
   min-width: 300px;
   margin: 0 auto;
 }
@@ -148,9 +143,6 @@ ol {
 }
 .content-wrap a {
   word-break: break-all;
-}
-.headline {
-  border-bottom: 4px solid #f6f6f6;
 }
 .headline-title.onlyheading {
   margin: 20px 0;
@@ -360,7 +352,7 @@ ol {
   margin-right: 0;
 }
 .headline .img-place-holder {
-  height: 200px;
+  height: 0px;
 }
 .from-column {
   width: 280px;
@@ -759,6 +751,9 @@ a.origin-source:link .text {
 }
 .origin-source-wrap.unfocused .focus-link {
   display: block;
+}
+.origin-source-wrap.unfocused .origin-source {
+  margin-right: 45px;
 }
 .origin-source-wrap.unfocused .origin-source:before,
 .origin-source-wrap.unfocused .origin-source:after {

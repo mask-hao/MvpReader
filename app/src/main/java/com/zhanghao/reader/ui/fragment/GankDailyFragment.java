@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -155,7 +156,15 @@ public class GankDailyFragment extends BaseFragment implements GankDailyContract
     @Override
     public void showError(Throwable e) {
         Log.d(TAG, "showError: " + e.getMessage());
-        Toast.makeText(getContext(), "加载失败", Toast.LENGTH_SHORT).show();
+        snackbar=Snackbar.make(gankFragCdl,"加载失败！",Snackbar.LENGTH_INDEFINITE)
+                .setAction("重试", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        presenter.getGankDaliy(1,true);
+                        snackbar.dismiss();
+                    }
+                });
+        snackbar.show();
     }
 
     @Override
@@ -226,9 +235,6 @@ public class GankDailyFragment extends BaseFragment implements GankDailyContract
 
         for(CoordinatorLayout coordinatorLayout:coordinatorLayoutList)
             coordinatorLayout.setBackgroundResource(cdlBackgroundColor.resourceId);
-
-
-        photoRlv.getAdapter().getItemCount();
 
 
         int childCount=photoRlv.getChildCount();
