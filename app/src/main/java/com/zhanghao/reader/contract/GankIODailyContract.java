@@ -9,10 +9,10 @@ import com.zhanghao.reader.presenter.BasePresenter;
 
 public interface GankIODailyContract {
     interface View extends BaseView<Presenter>{
-        void setUpGankData(GankItem gankItem,boolean update);
+        void setUpGankData(GankItem gankItem,boolean firstLoad,boolean refresh);
     }
 
     interface Presenter extends BasePresenter{
-        void getGankDaliy(String type,int page,boolean update);
+        void getGankDaliy(String type,int page,boolean firstLoad,boolean refresh);
     }
 }

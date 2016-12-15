@@ -41,7 +41,7 @@ public class ZhiHuNewsPresenterImpl extends BasePresenterImpl implements ZhiHuDa
     }
 
     @Override
-    public void getLatestZhiHuNews(boolean isRefresh) {
+    public void getLatestZhiHuNews(final boolean isRefresh) {
                 if (!isRefresh) mView.showDialog();
         Subscription subscription=zhiHuApiService.getLatestNews()
                 .map(new Func1<ZhiHuLatestItem, ZhiHuLatestItem>() {
@@ -68,7 +68,7 @@ public class ZhiHuNewsPresenterImpl extends BasePresenterImpl implements ZhiHuDa
                     public void onNext(ZhiHuLatestItem zhiHuDailyItem) {
                             List<ZhiHuStories> storiesBeen=zhiHuDailyItem.getStories();
                             List<ZhiHuTopStories> topStoriesBeanList=zhiHuDailyItem.getTop_stories();
-                            mView.setUpZhiHuNewsLastestList(storiesBeen,topStoriesBeanList);
+                            mView.setUpZhiHuNewsLastestList(storiesBeen,topStoriesBeanList,isRefresh);
                     }
                 });
                 addSubscription(subscription);

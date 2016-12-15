@@ -16,7 +16,7 @@ import java.util.List;
 public interface ZhiHuDailyContract {
 
     interface View extends BaseView<Presenter>{
-        void setUpZhiHuNewsLastestList(List<ZhiHuStories> storiesBeanList,List<ZhiHuTopStories> topNewsList);
+        void setUpZhiHuNewsLastestList(List<ZhiHuStories> storiesBeanList,List<ZhiHuTopStories> topNewsList,boolean isRefresh);
         //void setUpZhiHuTopNewsList();
         void UpDateZhiHuNewsList(List<ZhiHuStories> storiesBeanList);
     }

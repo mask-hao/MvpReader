@@ -9,6 +9,7 @@ import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -74,8 +75,11 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
 
     private void initView() {
        // StatusBarUtil.setTransparent(this);
-        if (dayNightUtil.isNight())
-            zhihuContentWv.setBackgroundColor(getResources().getColor(R.color.md_blue_grey_900));
+//        if (dayNightUtil.isNight()){
+//            TypedValue typedValue=new TypedValue();
+//            getTheme().resolveAttribute(R.attr.colorCdlBackBackground,typedValue,true);
+//            zhihuContentWv.setBackgroundResource(typedValue.resourceId);
+//        }
 
         WebSettings webSettings = zhihuContentWv.getSettings();
         webSettings.setAllowFileAccess(true);
@@ -120,19 +124,16 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
                 "\t<meta name=\"viewport\" content=\"width=device-width,user-scalable=no\">\n"
         );
 
+        String css="<link rel=\"stylesheet\" href=\"file:///android_asset/news_qa.min.css\" type=\"text/css\">\n";
 
-        String css="<link rel=\"stylesheet\" href=\"file:///android_asset/css/share.css\" type=\"text/css\">\n";
+        String nightJS="<script src=\"file:///android_asset/night.js\"></script>\n";
 
-        String cssNight="<link rel=\"stylesheet\" href=\"file:///android_asset/css/shareNight.css\" type=\"text/css\">\n";
 
-//        String js="<link rel=\"stylesheet\" href=\"file:///android_asset/night.js\" type=\"text/css\">\n";
-//
         if (dayNightUtil.isNight())
-            stringBuilder.append(cssNight);
-        else
-            stringBuilder.append(css);
+            stringBuilder.append(nightJS);
 
         stringBuilder
+                .append(css)
                 .append("</head>")
                 .append(body)
                 .append("</body></html>");
@@ -191,8 +192,8 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.share_bt:
-               // beginShare(title,url);
-                hideOrShowToolBar();
+               beginShare(title,url);
+                //hideOrShowToolBar();
                 break;
         }
     }

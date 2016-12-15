@@ -46,7 +46,7 @@ public class GankDailyPresenterImpl extends BasePresenterImpl implements GankDai
     //// TODO: 2016/11/27 to do a lamada
 
     @Override
-    public void getGankDaliy(int page, final boolean firstLoad) {
+    public void getGankDaliy(int page, final boolean firstLoad, final boolean isRefresh) {
 
         Log.d(TAG, "getGankDaliy: "+page);
 
@@ -89,7 +89,7 @@ public class GankDailyPresenterImpl extends BasePresenterImpl implements GankDai
 
             @Override
             public void onNext(List<GankDailyItem> gankDailyItems) {
-                mView.setUpGankItemDaily(gankDailyItems,firstLoad);
+                mView.setUpGankItemDaily(gankDailyItems,firstLoad,isRefresh);
             }
         });
         addSubscription(subscription);

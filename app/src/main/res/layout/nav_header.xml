@@ -6,7 +6,7 @@
     android:fitsSystemWindows="true"
     android:id="@+id/nav_header"
     android:orientation="vertical"
-    android:background="@drawable/img_header_back"
+    android:background="?attr/colorCdlBackBackground"
     android:layout_width="match_parent"
     android:layout_height="220dp">
     <TextView

@@ -2,6 +2,7 @@ package com.zhanghao.reader.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -91,6 +92,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             if (i == 0) menuItem.setChecked(true);
         }
         mainNav.inflateHeaderView(R.layout.nav_header);
+
+//        if (dayNightUtil.isNight()){
+//            TypedValue mainNavColor=new TypedValue();
+//            getTheme().resolveAttribute(R.attr.colorCdlBackBackground,mainNavColor,true);
+//            mainNav.setBackgroundResource(mainNavColor.resourceId);
+//            mainNav.setItemIconTintList(new ColorStateList());
+//        }
+
         changeUtil.initFragment("zhihu");
     }
 
@@ -124,16 +133,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main,menu);
-
+        if (dayNightUtil.isNight()) menu.getItem(0).setTitle(R.string.day_mode);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        if (dayNightUtil.isNight()&& item.getItemId()==R.id.menu_night)
+            item.setTitle(R.string.day_mode);
         switch (item.getItemId()){
             case R.id.menu_night:
-                changeTheme();
+                changeTheme(item);
                 break;
         }
 
@@ -146,23 +156,29 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     /**
      * 改变为夜间主题
      */
-    private void changeTheme() {
+    private void changeTheme(MenuItem menuItem) {
         showThemeChangeAnimation();
-        toggleThemeSetting();
+        toggleThemeSetting(menuItem);
         refreshStatusBar();
+//        TypedValue typedValue=new TypedValue();
+//        getTheme().resolveAttribute(R.attr.colorCdlBackBackground,typedValue,true);
+//        drawerMain.setBackgroundResource(typedValue.resourceId);
+//        mainNav.setBackgroundResource(typedValue.resourceId);
         EventBus.getDefault().post(new ThemeChangeMessage(true));
     }
 
     /**
      * 却换主题设置
      */
-    private void toggleThemeSetting() {
+    private void toggleThemeSetting(MenuItem menuItem) {
         if (dayNightUtil.isDay()){
             dayNightUtil.setMode(DayNight.NIGHT);
             setTheme(R.style.NightTheme);
+            menuItem.setTitle(R.string.day_mode);
         }else{
             dayNightUtil.setMode(DayNight.DAY);
             setTheme(R.style.DayTheme);
+            menuItem.setTitle(R.string.nigth_mode);
         }
     }
 

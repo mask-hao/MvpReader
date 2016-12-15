@@ -312,12 +312,12 @@ ol {
 }
 .night .comment-label {
   color: #b8b8b8;
-  border-top: 1px solid #303030;
-  border-bottom: 1px solid #303030;
+  border-top: 1px solid #ff263238;
+  border-bottom: 1px solid #ff263238;
 }
 .night .comment-item {
   color: #7f7f7f;
-  border-bottom: 1px solid #303030;
+  border-bottom: 1px solid #ff263238;
 }
 .icon-vote,
 .icon-voted {
@@ -368,20 +368,20 @@ ol {
   background-image: url(http://static.daily.zhihu.com/img/News_Column_Entrance_Highlight.png);
 }
 .night .headline {
-  border-bottom: 4px solid #303030;
+  border-bottom: 4px solid #ff263238;
 }
 .night img {
   -webkit-mask-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7)));
 }
 body.night,
 .night .content-wrap {
-  background: #343434;
+  background: #263238;
 }
 .night .answer + .answer {
-  border-top: 2px solid #303030;
+  border-top: 2px solid #ff263238;
 }
 .night .question + .question {
-  border-top: 4px solid #303030;
+  border-top: 4px solid #ff263238;
 }
 .night .view-more a {
   background: #292929;

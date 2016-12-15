@@ -36,8 +36,8 @@ public class GankIOPresenterImpl extends BasePresenterImpl implements GankIODail
 
 
     @Override
-    public void getGankDaliy(String type, int page , final boolean upadate ) {
-        if (!upadate) mView.showDialog();
+    public void getGankDaliy(String type, int page , final boolean firstLoad, final boolean refresh) {
+        if (!firstLoad) mView.showDialog();
         Subscription subscription=gankService.getGankDaliy(type,page)
                 .map(new Func1<GankItem, GankItem>() {
                     @Override
@@ -63,7 +63,7 @@ public class GankIOPresenterImpl extends BasePresenterImpl implements GankIODail
 
                     @Override
                     public void onNext(GankItem gankItem) {
-                        mView.setUpGankData(gankItem,upadate);
+                        mView.setUpGankData(gankItem,firstLoad,refresh);
                     }
                 });
         addSubscription(subscription);

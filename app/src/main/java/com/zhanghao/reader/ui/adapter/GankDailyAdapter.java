@@ -45,7 +45,7 @@ public class GankDailyAdapter extends ComAdapter<DisplayItem>{
     public void convert(final ComViewHolder comViewHolder, DisplayItem displayItem, final int position) {
 
         GankDailyItem gankDailyItem= (GankDailyItem) displayItem;
-        ImageView photo_iv=comViewHolder.getView(R.id.photo_iv);
+        final ImageView photo_iv=comViewHolder.getView(R.id.photo_iv);
         TextView title_tv=comViewHolder.getView(R.id.photo_tv);
 
         String url= gankDailyItem.getUrl();
@@ -60,7 +60,7 @@ public class GankDailyAdapter extends ComAdapter<DisplayItem>{
                 @Override
                 public void onClick(View view) {
                     int pos=comViewHolder.getLayoutPosition();
-                    onItemClickListener.onPhotoClick(pos);
+                    onItemClickListener.onPhotoClick(photo_iv,pos);
                 }
             });
 
@@ -83,7 +83,7 @@ public class GankDailyAdapter extends ComAdapter<DisplayItem>{
 
 
     public interface OnItemClickListener{
-        void onPhotoClick(int position);
+        void onPhotoClick(View view,int position);
         void onTitleClick(int position);
     }
 }

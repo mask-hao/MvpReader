@@ -87,11 +87,11 @@ public class GankDailyFragment extends BaseFragment implements GankDailyContract
         photoSrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                photoAll.clear();
-                presenter.getGankDaliy(1, false);
+                presenter.getGankDaliy(1, false,true);//刷新
+
             }
         });
-        presenter.getGankDaliy(page, true);
+        presenter.getGankDaliy(page, true,false);
     }
 
     @Override
@@ -101,42 +101,34 @@ public class GankDailyFragment extends BaseFragment implements GankDailyContract
     }
 
 
-    private void setUpData(List<GankDailyItem> gankDailyItems, boolean firstLoad) {
+    private void setUpData(List<GankDailyItem> gankDailyItems, boolean firstLoad,boolean isRefresh) {
+
+        if (isRefresh) photoAll.clear();
+
         if (firstLoad) {
-
             photoAll.addAll(gankDailyItems);
-
             dailyAdapter = new GankDailyAdapter(getContext(), R.layout.gankdaily_item, photoAll);
-
             loadMoreWrapper = new LoadMoreWrapper(dailyAdapter);
             loadMoreWrapper.setLoadMoreView(R.layout.loadmore);
             photoRlv.setAdapter(loadMoreWrapper);
-
-
 //            photoRlv.
-
                  photoRlv.postDelayed(new Runnable() {
                      @Override
                      public void run() {
                          RefreshUI();//第一次加载时需要刷新UI
                      }
                  },500);
-
-
         } else {
-
             photoAll.addAll(gankDailyItems);
-
             loadMoreWrapper.notifyDataSetChanged();
             loadMoreWrapper.setIsLoadMore(false);
         }
-
         loadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
             @Override
             public void OnLoadMore() {
                 loadMoreWrapper.setIsLoadMore(true);
                 page++;
-                presenter.getGankDaliy(page, false);
+                presenter.getGankDaliy(page, false,false);
             }
         });
         dailyAdapter.setOnGankDailyClickListener(this);
@@ -160,7 +152,7 @@ public class GankDailyFragment extends BaseFragment implements GankDailyContract
                 .setAction("重试", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        presenter.getGankDaliy(1,true);
+                        presenter.getGankDaliy(1,true,false);
                         snackbar.dismiss();
                     }
                 });
@@ -174,21 +166,21 @@ public class GankDailyFragment extends BaseFragment implements GankDailyContract
 
 
     @Override
-    public void setUpGankItemDaily(List<GankDailyItem> gankDailyItems, boolean firstLoad) {
+    public void setUpGankItemDaily(List<GankDailyItem> gankDailyItems, boolean firstLoad,boolean isRefresh) {
         if (photoSrl.isRefreshing()) {
             photoSrl.setRefreshing(false);
             page = 1;
         }
-        setUpData(gankDailyItems, firstLoad);
+        setUpData(gankDailyItems, firstLoad,isRefresh);
     }
 
 
     @Override
-    public void onPhotoClick(int position) {
+    public void onPhotoClick(View photo,int position) {
         GankDailyItem gankDailyItem = (GankDailyItem) photoAll.get(position);
         String url = gankDailyItem.getUrl();
         Log.d(TAG, "onPhotoClick: " + url);
-        ActivityUtil.toPhotoActivity(getContext(), url);
+        ActivityUtil.toPhotoActivity(getActivity(),url,photo);
     }
 
 

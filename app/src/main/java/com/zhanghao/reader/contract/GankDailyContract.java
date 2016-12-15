@@ -12,10 +12,10 @@ import java.util.List;
 
 public interface GankDailyContract {
     interface View extends BaseView<Presenter>{
-        void setUpGankItemDaily(List<GankDailyItem> gankDailyItems, boolean firstLoad);
+        void setUpGankItemDaily(List<GankDailyItem> gankDailyItems, boolean firstLoad,boolean isRefresh);
     }
 
     interface Presenter extends BasePresenter {
-        void getGankDaliy(int page,boolean firstLoad);
+        void getGankDaliy(int page,boolean firstLoad,boolean isRefresh);
     }
 }

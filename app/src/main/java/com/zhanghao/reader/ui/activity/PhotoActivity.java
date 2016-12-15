@@ -3,6 +3,7 @@ package com.zhanghao.reader.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +30,7 @@ public class PhotoActivity extends BaseActivity{
     PhotoView photoIv;
     private String url;
     PhotoViewAttacher photoViewAttacher;
-
+    public static final String TRANSIT_PIC = "picture";
     @Override
     protected int setContentLayout() {
         return R.layout.photo_display;
@@ -45,6 +46,7 @@ public class PhotoActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         initData();
+//        ViewCompat.setTransitionName(photoIv,TRANSIT_PIC);
         initView();
         setTitle("");
     }

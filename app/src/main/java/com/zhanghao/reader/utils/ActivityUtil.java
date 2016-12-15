@@ -1,9 +1,11 @@
 package com.zhanghao.reader.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.view.animation.Animation;
-
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.view.View;
 import com.zhanghao.reader.ui.activity.GankContentActivity;
 import com.zhanghao.reader.ui.activity.GankDailyActivity;
 import com.zhanghao.reader.ui.activity.MainActivity;
@@ -29,10 +31,12 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
-    public static void toPhotoActivity(Context context,String url){
+    public static void toPhotoActivity(Activity context, String url, View view){
         Intent intent=new Intent(context, PhotoActivity.class);
+        ActivityOptionsCompat optionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(context,view,PhotoActivity.TRANSIT_PIC);
         intent.putExtra("url",url);
-        context.startActivity(intent);
+        ActivityCompat.startActivity(context,intent,optionsCompat.toBundle());
+//        context.startActivity(intent);
     }
 
 

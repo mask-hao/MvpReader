@@ -127,7 +127,6 @@ public class ZhiHuFragment extends BaseFragment implements ZhiHuDailyContract.Vi
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                listAll.clear();
                 presenter.getLatestZhiHuNews(true);
             }
         });
@@ -137,12 +136,14 @@ public class ZhiHuFragment extends BaseFragment implements ZhiHuDailyContract.Vi
     }
 
     @Override
-    public void setUpZhiHuNewsLastestList(List<ZhiHuStories> storiesBeanList, List<ZhiHuTopStories> storiesBeanTopList) {
+    public void setUpZhiHuNewsLastestList(List<ZhiHuStories> storiesBeanList, List<ZhiHuTopStories> storiesBeanTopList ,boolean isRefresh) {
 
         if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
             now = TimeUtils.getCurrentDate("yyyyMMdd");
         }
+        if (isRefresh) listAll.clear();
+
 
 
         List<String> titles = new ArrayList<>();
