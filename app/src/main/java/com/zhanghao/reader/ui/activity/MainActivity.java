@@ -2,6 +2,7 @@ package com.zhanghao.reader.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,29 +12,40 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+import com.zhanghao.reader.BuildConfig;
 import com.zhanghao.reader.R;
+import com.zhanghao.reader.bean.AppInfo;
 import com.zhanghao.reader.bean.ThemeChangeMessage;
+import com.zhanghao.reader.contract.DownLoadAppContract;
+import com.zhanghao.reader.presenter.DownLoadAppPresenterImpl;
 import com.zhanghao.reader.ui.listener.RefreshUIListener;
 import com.zhanghao.reader.utils.DayNight;
 import com.zhanghao.reader.utils.FragmentUtil;
 import com.zhanghao.reader.utils.FragmentConfig;
 import com.zhanghao.reader.utils.MainMenu;
+import com.zhanghao.reader.utils.SpUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.net.URL;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,DownLoadAppContract.View{
     @BindView(R.id.toolbar_include)
     Toolbar toolbar;
     @BindView(R.id.fragment_content)
@@ -47,6 +59,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private long exitTime=0;
     private static final String TAG = "MainActivity";
     public RefreshUIListener uiListener;
+    private final static String FILE_NAME="setting";
+    private final static String URL_NAME="start_url";
+
+    AlertDialog alertDialog;
+    DownLoadAppContract.Presenter updatePresenter;
     @Override
     protected int setContentLayout() {
         return R.layout.activity_main;
@@ -64,8 +81,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         initTheme();
         initView();
         initMenu();
-
+        initUpdateVersion();
     }
+
+    private void initUpdateVersion() {
+        initPermission(COMMON_PERMISSIONS);
+        updatePresenter=new DownLoadAppPresenterImpl(this);
+        updatePresenter.getAppInfo();
+    }
+
 
     private void initView() {
         toggle = new ActionBarDrawerToggle(this, drawerMain, toolbar, R.string.open, R.string.close);
@@ -73,6 +97,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawerMain.addDrawerListener(toggle);
         mainNav.setNavigationItemSelectedListener(this);
         changeUtil = new FragmentUtil(this);
+    }
+
+    private void setNavImg() {
+        SpUtil.init(this,FILE_NAME);
+        View view=mainNav.getHeaderView(0);
+        ImageView navIv= (ImageView) view.findViewById(R.id.nav_iv);
+        Picasso.with(this)
+                .load(SpUtil.getSavedString(URL_NAME))
+                .error(R.drawable.img_header_back)
+                .into(navIv);
     }
 
     // TODO: 2016/12/11 动态添加Menu
@@ -92,15 +126,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             if (i == 0) menuItem.setChecked(true);
         }
         mainNav.inflateHeaderView(R.layout.nav_header);
-
-//        if (dayNightUtil.isNight()){
-//            TypedValue mainNavColor=new TypedValue();
-//            getTheme().resolveAttribute(R.attr.colorCdlBackBackground,mainNavColor,true);
-//            mainNav.setBackgroundResource(mainNavColor.resourceId);
-//            mainNav.setItemIconTintList(new ColorStateList());
-//        }
-
         changeUtil.initFragment("zhihu");
+        setNavImg();
     }
 
     @Override
@@ -228,4 +255,49 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
+    @Override
+    public void upDate(final AppInfo appInfo) {
+        int buildVersionCode= BuildConfig.VERSION_CODE;
+        int loadVersionCode= Integer.parseInt(appInfo.getBuild());
+        final String url=appInfo.getInstall_url().replace("http://download.fir.im/","");
+        if (loadVersionCode>buildVersionCode){
+
+            alertDialog=new AlertDialog.Builder(this)
+                    .setTitle("有更新")
+                    .setMessage(appInfo.getChangelog())
+                    .setPositiveButton(R.string.cancle, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            alertDialog.cancel();
+                        }
+                    })
+                    .setNegativeButton(R.string.sure, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            updatePresenter.startDownLoadService(MainActivity.this,url);
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    @Override
+    public void showDialog() {
+
+    }
+
+    @Override
+    public void hideDialog() {
+
+    }
+
+    @Override
+    public void showError(Throwable e) {
+
+    }
+
+    @Override
+    public void setPresenter(DownLoadAppContract.Presenter presenter) {
+
+    }
 }

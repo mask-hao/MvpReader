@@ -10,4 +10,5 @@
     <dimen name="listTextSize">18sp</dimen>
     <dimen name="gankSectionTextSize">25sp</dimen>
     <dimen name="settingMarginStart">10dp</dimen>
+
 </resources>

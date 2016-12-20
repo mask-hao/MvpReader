@@ -10,4 +10,8 @@
     <string name="nigth_mode">夜间模式</string>
     <string name="day_mode">日间模式</string>
     <string name="setting">设置</string>
+    <string name="update">检查更新</string>
+    <string name="cancle">取消</string>
+    <string name="sure">确定</string>
+    <string name="download">下载</string>
 </resources>

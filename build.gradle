@@ -30,7 +30,7 @@ ext{
     buildToolsVersion = '25.0.0'
 
     //dependencies 依赖的版本号
-    supportLiraryVersion='25.0.1'
+    supportLiraryVersion='25.1.0'
     retrofitVersion='2.1.0'
     rxjavaVersion='1.1.6'
     rxAndroidVersion='1.2.1'

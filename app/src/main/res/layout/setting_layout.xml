@@ -5,21 +5,16 @@
     <include
         layout="@layout/toolbar_include"/>
     <RelativeLayout
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:id="@+id/update_rl"
         android:layout_width="match_parent"
         android:layout_height="56dp">
         <TextView
             android:layout_marginStart="@dimen/settingMarginStart"
             android:layout_centerVertical="true"
             android:textSize="@dimen/listTextSize"
-            android:text="@string/nigth_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Switch
-            android:checked="false"
-            android:id="@+id/nightTheme_st"
-            android:layout_marginEnd="@dimen/settingMarginStart"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:text="@string/update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>

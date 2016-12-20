@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 <ImageView
@@ -8,4 +8,14 @@
     android:scaleType="fitXY"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
-</LinearLayout>
+    <TextView
+        android:id="@+id/zhihu_start_tv"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textColor="#fff"
+        android:layout_marginBottom="16dp"
+        android:textSize="@dimen/sectionTextSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

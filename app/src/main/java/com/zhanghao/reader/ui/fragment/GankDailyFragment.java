@@ -205,71 +205,20 @@ public class GankDailyFragment extends BaseFragment implements GankDailyContract
 
 
     public void RefreshUI() {
-
-
-        Log.e("xiaoxi", "gank onMessageEvent: ");
-
-        TypedValue backgroundColor=new TypedValue();
-        TypedValue cardBackgroundColor=new TypedValue();
-        TypedValue cdlBackgroundColor=new TypedValue();
-        TypedValue textColor=new TypedValue();
-        TypedValue toolBarColor=new TypedValue();
-        TypedValue statusBarColor=new TypedValue();
-        Resources.Theme theme= getActivity().getTheme();
-        Resources resources=getResources();
-        theme.resolveAttribute(R.attr.colorBackground,backgroundColor,true);
-        theme.resolveAttribute(R.attr.colorCardBackground,cardBackgroundColor,true);
-        theme.resolveAttribute(R.attr.colorTextView,textColor,true);
-        theme.resolveAttribute(R.attr.colorCdlBackBackground,cdlBackgroundColor,true);
-        theme.resolveAttribute(R.attr.colorPrimary,toolBarColor,true);
-        theme.resolveAttribute(R.attr.colorPrimaryDark,statusBarColor,true);
-
-
+        initTypedValues();
         for(CoordinatorLayout coordinatorLayout:coordinatorLayoutList)
             coordinatorLayout.setBackgroundResource(cdlBackgroundColor.resourceId);
-
-
         int childCount=photoRlv.getChildCount();
-
-        Log.d(TAG, "RefreshUI: "+childCount);
-
-
         for (int i=0;i<childCount;i++){
             ViewGroup childView= (ViewGroup) photoRlv.getChildAt(i);
             CardView cardView= (CardView) childView.findViewById(R.id.gank_item_cv);
             cardView.setCardBackgroundColor(cardBackgroundColor.resourceId);
-
             LinearLayout linear= (LinearLayout) childView.findViewById(R.id.gank_item_ll1);
             linear.setBackgroundResource(cardBackgroundColor.resourceId);
-
             TextView textView= (TextView) childView.findViewById(R.id.photo_tv);
             textView.setBackgroundResource(cardBackgroundColor.resourceId);
             textView.setTextColor(resources.getColor(textColor.resourceId));
-
         }
-
-
-        Class<RecyclerView> recyclerViewClass=RecyclerView.class;
-        try {
-            Field declaredField=recyclerViewClass.getDeclaredField("mRecycler");
-            declaredField.setAccessible(true);
-            Method declaredMethod=Class.forName(RecyclerView.Recycler.class.getName()).getDeclaredMethod("clear",(Class<?>[]) new Class[0]);
-            declaredMethod.invoke(declaredField.get(photoRlv),new Object[0]);
-            RecyclerView.RecycledViewPool recycledViewPool=photoRlv.getRecycledViewPool();
-            recycledViewPool.clear();
-        }catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
+        RefreshRecyclerView(photoRlv);
     }
-
-
 }

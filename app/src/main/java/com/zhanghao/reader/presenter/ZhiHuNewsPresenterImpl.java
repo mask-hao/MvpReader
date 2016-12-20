@@ -1,6 +1,7 @@
 package com.zhanghao.reader.presenter;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.zhanghao.reader.MyApplication;
 import com.zhanghao.reader.api.zhihu.ZhiHuApi;
@@ -27,6 +28,9 @@ import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
  */
 
 public class ZhiHuNewsPresenterImpl extends BasePresenterImpl implements ZhiHuDailyContract.Presenter{
+
+
+    private static final String TAG = "ZhiHuNewsPresenterImpl";
 
     @NonNull
     private final ZhiHuDailyContract.View mView;
@@ -68,6 +72,8 @@ public class ZhiHuNewsPresenterImpl extends BasePresenterImpl implements ZhiHuDa
                     public void onNext(ZhiHuLatestItem zhiHuDailyItem) {
                             List<ZhiHuStories> storiesBeen=zhiHuDailyItem.getStories();
                             List<ZhiHuTopStories> topStoriesBeanList=zhiHuDailyItem.getTop_stories();
+//                            Log.d(TAG, "onNext: "+topStoriesBeanList);
+
                             mView.setUpZhiHuNewsLastestList(storiesBeen,topStoriesBeanList,isRefresh);
                     }
                 });
@@ -94,6 +100,7 @@ public class ZhiHuNewsPresenterImpl extends BasePresenterImpl implements ZhiHuDa
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.d(TAG, "onError: "+e.getMessage());
                         mView.showError(e);
                     }
 

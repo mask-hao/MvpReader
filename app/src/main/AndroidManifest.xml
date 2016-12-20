@@ -15,18 +15,33 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         >
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.zhanghao.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"/>
+        </provider>
+        
         <activity android:name=".ui.activity.MainActivity"/>
         <activity android:name=".ui.activity.ZhiHuContentActivity" />
         <activity android:name=".ui.activity.GankContentActivity"/>
         <activity android:name=".ui.activity.PhotoActivity"/>
         <activity android:name=".ui.activity.GankDailyActivity"/>
-        <activity android:name=".ui.activity.SplashActivity">
+        <activity android:name=".ui.activity.SplashActivity"
+            android:theme="@style/AppTheme"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.SettingActivity"/>
+
+
+        <service android:name=".service.DownLoadUpdateService"/>
     </application>
 
 </manifest>

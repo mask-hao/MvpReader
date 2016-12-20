@@ -6,5 +6,8 @@
         <item
             android:id="@+id/menu_night"
             android:title="@string/nigth_mode"/>
+        <item
+            android:id="@+id/menu_setting"
+            android:title="@string/setting"/>
     </group>
 </menu>

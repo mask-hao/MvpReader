@@ -132,7 +132,8 @@ public class ZhiHuFragment extends BaseFragment implements ZhiHuDailyContract.Vi
         });
         zhihuRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         zhihuRecycler.setItemAnimator(new DefaultItemAnimator());
-        presenter.getLatestZhiHuNews(false);
+        if (presenter!=null)
+            presenter.getLatestZhiHuNews(false);
     }
 
     @Override
@@ -209,7 +210,7 @@ public class ZhiHuFragment extends BaseFragment implements ZhiHuDailyContract.Vi
                 .setAction("重试", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        presenter.getDailyNews(now);
+                        presenter.getLatestZhiHuNews(false);
                         snackbar.dismiss();
                     }
                 });
@@ -303,29 +304,9 @@ public class ZhiHuFragment extends BaseFragment implements ZhiHuDailyContract.Vi
 
 
     public void RefreshUI(){
-
-        Log.e("xiaoxi", "zhihu onMessageEvent: ");
-
-
-        TypedValue backgroundColor=new TypedValue();
-        TypedValue cardBackgroundColor=new TypedValue();
-        TypedValue cdlBackgroundColor=new TypedValue();
-        TypedValue textColor=new TypedValue();
-        TypedValue toolBarColor=new TypedValue();
-        TypedValue statusBarColor=new TypedValue();
-        Resources.Theme theme= getActivity().getTheme();
-        Resources resources=getResources();
-        theme.resolveAttribute(R.attr.colorBackground,backgroundColor,true);
-        theme.resolveAttribute(R.attr.colorCardBackground,cardBackgroundColor,true);
-        theme.resolveAttribute(R.attr.colorTextView,textColor,true);
-        theme.resolveAttribute(R.attr.colorCdlBackBackground,cdlBackgroundColor,true);
-        theme.resolveAttribute(R.attr.colorPrimary,toolBarColor,true);
-        theme.resolveAttribute(R.attr.colorPrimaryDark,statusBarColor,true);
-
-
+        initTypedValues();
         for(CoordinatorLayout coordinatorLayout:coordinatorLayoutList)
            coordinatorLayout.setBackgroundResource(cdlBackgroundColor.resourceId);
-
 
         int childCount=zhihuRecycler.getChildCount();
         for (int i=0;i<childCount;i++){
@@ -357,28 +338,7 @@ public class ZhiHuFragment extends BaseFragment implements ZhiHuDailyContract.Vi
                 textView.setTextColor(resources.getColor(textColor.resourceId));
             }
         }
-
-        Class<RecyclerView> recyclerViewClass=RecyclerView.class;
-        try {
-            Field declaredField=recyclerViewClass.getDeclaredField("mRecycler");
-            declaredField.setAccessible(true);
-            Method declaredMethod=Class.forName(RecyclerView.Recycler.class.getName()).getDeclaredMethod("clear",(Class<?>[]) new Class[0]);
-            declaredMethod.invoke(declaredField.get(zhihuRecycler),new Object[0]);
-            RecyclerView.RecycledViewPool recycledViewPool=zhihuRecycler.getRecycledViewPool();
-            recycledViewPool.clear();
-        }catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-
+        RefreshRecyclerView(zhihuRecycler);
     }
 
 }

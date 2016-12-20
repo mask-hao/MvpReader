@@ -1,19 +1,29 @@
 package com.zhanghao.reader.ui.activity;
+import android.Manifest;
 import android.content.Intent;
 import android.content.res.Resources.Theme;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import com.zhanghao.reader.R;
+import com.zhanghao.reader.contract.BaseView;
+import com.zhanghao.reader.presenter.BasePresenter;
+import com.zhanghao.reader.presenter.BasePresenterImpl;
+import com.zhanghao.reader.utils.ActivityUtil;
 import com.zhanghao.reader.utils.DayNightUtil;
+import com.zhanghao.reader.utils.PermissionUtil;
 
 
 /**
@@ -31,6 +41,9 @@ public abstract class BaseActivity extends AppCompatActivity{
 
     protected abstract boolean canBack();
     protected DayNightUtil dayNightUtil;
+
+    protected String [] COMMON_PERMISSIONS={Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,13 +106,21 @@ public abstract class BaseActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
+        int id=item.getItemId();
+        switch (id){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.menu_setting:
+                ActivityUtil.toSettingActivity(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+
     }
+
+
 
 
 
@@ -115,6 +136,39 @@ public abstract class BaseActivity extends AppCompatActivity{
                 .start();
         mIsHidden=!mIsHidden;
     }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        View view=getWindow().getDecorView();
+        if (requestCode == PermissionUtil.REQUEST_PERMISSION) {
+            if (!PermissionUtil.verifyPermissions(grantResults)) {
+                Snackbar.make(view, "缺少必要的权限！请点击设置",
+                        Snackbar.LENGTH_INDEFINITE)
+                        .setAction("设置", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ActivityCompat.requestPermissions(BaseActivity.this, permissions,
+                                        PermissionUtil.REQUEST_PERMISSION);
+                            }
+                        }).show();
+            }
+        }
+    }
+
+
+
+    protected void initPermission(String [] PERMISSIONS){
+        boolean permissionCheck= PermissionUtil.hasPermissions(this,PERMISSIONS);
+        if (!permissionCheck)
+            ActivityCompat.requestPermissions(this,PERMISSIONS,PermissionUtil.REQUEST_PERMISSION);
+    }
+
+
+
+
 
 
 }
