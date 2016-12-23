@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_main"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context="com.zhanghao.reader.ui.activity.MainActivity">
 
     <android.support.design.widget.CoordinatorLayout
@@ -26,9 +26,9 @@
     </android.support.design.widget.CoordinatorLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/main_nav"
+        android:background="?attr/colorCdlBackBackground"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         android:layout_gravity="start"
         />
 </android.support.v4.widget.DrawerLayout>

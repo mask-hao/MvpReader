@@ -13,7 +13,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:startColor">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
 
         <item name="colorBackground">@android:color/white</item>
         <item name="colorTextView">@android:color/black</item>
@@ -28,7 +29,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:startColor">@android:color/transparent</item>
+
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
 
         <item name="colorBackground">@android:color/white</item>
         <item name="colorTextView">@android:color/black</item>
@@ -42,8 +45,9 @@
         <item name="colorPrimaryDark">@color/md_blue_grey_900</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
 
-        <item name="android:startColor">@android:color/transparent</item>
 
         <item name="colorBackground">@color/md_blue_grey_700</item>
         <item name="colorTextView">@color/md_blue_grey_100</item>

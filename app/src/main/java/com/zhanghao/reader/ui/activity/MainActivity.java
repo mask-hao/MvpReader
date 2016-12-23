@@ -4,8 +4,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -20,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -37,6 +41,7 @@ import com.zhanghao.reader.utils.FragmentUtil;
 import com.zhanghao.reader.utils.FragmentConfig;
 import com.zhanghao.reader.utils.MainMenu;
 import com.zhanghao.reader.utils.SpUtil;
+import com.zhanghao.reader.utils.StatusBarUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -78,11 +83,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        initTheme();
+        refreshStatusBar();
         initView();
         initMenu();
         initUpdateVersion();
+
     }
+
 
     private void initUpdateVersion() {
         initPermission(COMMON_PERMISSIONS);
@@ -95,6 +102,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         toggle = new ActionBarDrawerToggle(this, drawerMain, toolbar, R.string.open, R.string.close);
         toggle.syncState();
         drawerMain.addDrawerListener(toggle);
+
         mainNav.setNavigationItemSelectedListener(this);
         changeUtil = new FragmentUtil(this);
     }
@@ -173,7 +181,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 changeTheme(item);
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -186,12 +193,36 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void changeTheme(MenuItem menuItem) {
         showThemeChangeAnimation();
         toggleThemeSetting(menuItem);
-        refreshStatusBar();
-//        TypedValue typedValue=new TypedValue();
-//        getTheme().resolveAttribute(R.attr.colorCdlBackBackground,typedValue,true);
-//        drawerMain.setBackgroundResource(typedValue.resourceId);
-//        mainNav.setBackgroundResource(typedValue.resourceId);
+        refreshStatusBarTest();
+        TypedValue navColor=new TypedValue();
+        getTheme().resolveAttribute(R.attr.colorCdlBackBackground,navColor,true);
+        mainNav.setBackgroundResource(navColor.resourceId);
         EventBus.getDefault().post(new ThemeChangeMessage(true));
+    }
+
+    private void refreshStatusBarTest() {
+        Resources.Theme theme=getTheme();
+        TypedValue statusBarColor=new TypedValue();
+        TypedValue toolbarColor=new TypedValue();
+        theme.resolveAttribute(R.attr.colorPrimaryDark,statusBarColor,true);
+        theme.resolveAttribute(R.attr.colorPrimary,toolbarColor,true);
+        toolbar.setBackgroundResource(toolbarColor.resourceId);
+        Log.d(TAG, "test: 改变主题之后："+statusBarColor.resourceId);
+        if (Build.VERSION.SDK_INT>=21){
+            getWindow().setStatusBarColor(getResources().getColor(statusBarColor.resourceId));
+        }
+
+
+    }
+
+
+    protected void refreshStatusBar(){
+        Resources.Theme theme=getTheme();
+        TypedValue statusBarColor=new TypedValue();
+        theme.resolveAttribute(R.attr.colorPrimaryDark,statusBarColor,true);
+        Log.d(TAG, "refreshStatusBar: 开启应用时候："+statusBarColor.resourceId);
+        StatusBarUtil.setTransparent(this);
+
     }
 
     /**

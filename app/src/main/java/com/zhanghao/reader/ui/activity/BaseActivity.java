@@ -2,6 +2,7 @@ package com.zhanghao.reader.ui.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.res.Resources.Theme;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.zhanghao.reader.presenter.BasePresenterImpl;
 import com.zhanghao.reader.utils.ActivityUtil;
 import com.zhanghao.reader.utils.DayNightUtil;
 import com.zhanghao.reader.utils.PermissionUtil;
+import com.zhanghao.reader.utils.StatusBarUtil;
 
 
 /**
@@ -47,12 +49,13 @@ public abstract class BaseActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initTheme();
         setContentView(setContentLayout());
+       // refreshStatusBar();
         mToolbar=(Toolbar) findViewById(R.id.toolbar_include);
         mAppBarLayout= (AppBarLayout) findViewById(R.id.app_bar_layout);
         if (mToolbar==null||mAppBarLayout==null) throw new IllegalStateException("the BaseActivity must be contain a toolbar and appbar");
         setUpToolBar();
-        initTheme();
 
     }
 
@@ -66,24 +69,25 @@ public abstract class BaseActivity extends AppCompatActivity{
             setTheme(R.style.DayTheme);
         else
             setTheme(R.style.NightTheme);
-        refreshStatusBar();
     }
 
     /**
      * 设置toolbar
      */
-    protected void refreshStatusBar(){
-        Theme theme=getTheme();
-        TypedValue statusBarColor=new TypedValue();
-        TypedValue toolbarColor=new TypedValue();
-        theme.resolveAttribute(R.attr.colorPrimaryDark,statusBarColor,true);
-        theme.resolveAttribute(R.attr.colorPrimary,toolbarColor,true);
-        mToolbar.setBackgroundResource(toolbarColor.resourceId);
-        if (Build.VERSION.SDK_INT>=21){
-            Log.d(TAG, "refreshStatusBar: 设置statusBar的颜色");
-            getWindow().setStatusBarColor(getResources().getColor(statusBarColor.resourceId));
-        }
-    };
+//    protected void refreshStatusBar(){
+//        Theme theme=getTheme();
+//        TypedValue statusBarColor=new TypedValue();
+//        TypedValue toolbarColor=new TypedValue();
+//        theme.resolveAttribute(R.attr.colorPrimaryDark,statusBarColor,true);
+//        theme.resolveAttribute(R.attr.colorPrimary,toolbarColor,true);
+//        mToolbar.setBackgroundResource(toolbarColor.resourceId);
+////        if (Build.VERSION.SDK_INT>=21){
+////            Log.d(TAG, "refreshStatusBar: 设置statusBar的颜色");
+////            getWindow().setStatusBarColor(getResources().getColor(statusBarColor.resourceId));
+////        }
+//        StatusBarUtil.setTranslucent(this,0);
+//
+//    };
 
 
     protected void setUpToolBar(){

@@ -74,12 +74,6 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
     }
 
     private void initView() {
-       // StatusBarUtil.setTransparent(this);
-//        if (dayNightUtil.isNight()){
-//            TypedValue typedValue=new TypedValue();
-//            getTheme().resolveAttribute(R.attr.colorCdlBackBackground,typedValue,true);
-//            zhihuContentWv.setBackgroundResource(typedValue.resourceId);
-//        }
 
         WebSettings webSettings = zhihuContentWv.getSettings();
         webSettings.setAllowFileAccess(true);
@@ -92,7 +86,7 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
         webSettings.setLoadsImagesAutomatically(true);
-        // zhihuContentWv.addJavascriptInterface(this,"");
+
         shareBt.setOnClickListener(this);
         new ZhiHuNewsContentPresenterImpl(this);
         presenter.getZhiHuContent(id);
@@ -128,7 +122,6 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
 
         String nightJS="<script src=\"file:///android_asset/night.js\"></script>\n";
 
-
         if (dayNightUtil.isNight())
             stringBuilder.append(nightJS);
 
@@ -136,32 +129,7 @@ public class ZhiHuContentActivity extends BaseActivity implements ZhiHuContentCo
                 .append(css)
                 .append("</head>")
                 .append(body)
-                .append("</body></html>");
-
-//        StringBuilder htmlSb = new StringBuilder("<!doctype html>\n<html><head>\n<meta charset=\"utf-8\">\n" +
-//                "\t<meta name=\"viewport\" content=\"width=device-width,user-scalable=no\">");
-
-        // TODO: 2016/12/13 夜间模式的调整
-
-//        String cssDay = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">\n";
-//
-//        String cssNight = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/newsNight.css\" type=\"text/css\">\n";
-//
-//        if (dayNightUtil.isNight()){
-//            htmlSb.append(cssNight);
-//        }
-//        if (dayNightUtil.isDay()){
-//            htmlSb.append(cssDay);
-//        }
-//       htmlSb.append("</head><body className=\"\"")
-//             .append(" >")
-//             .append(body);
-//       htmlSb.append("</body></html>");
-//       String html = htmlSb.toString();
-//
-//       html = html.replace("<div class=\"img-place-holder\">", "");
-//       Log.e("html1", html);
-//       Log.e("html2", html);
+                .append("</body></html>");;
 
         Log.d(TAG, "loadHtml: "+stringBuilder.toString());
        zhihuContentWv.loadDataWithBaseURL("x-data://base", stringBuilder.toString(), "text/html", "UTF-8", null);

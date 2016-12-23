@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/app_bar_layout"
-    android:background="@color/colorPrimary"
+    android:background="?attr/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:elevation="10dp"
@@ -15,7 +15,6 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         app:layout_collapseMode="pin"
-        android:fitsSystemWindows="true"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
     </android.support.v7.widget.Toolbar>
