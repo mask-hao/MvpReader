@@ -3,18 +3,30 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="?attr/colorBackground"
+    android:background="?attr/colorCdlBackBackground"
     android:layout_height="match_parent">
     <include
         layout="@layout/toolbar_include"/>
+
     <RelativeLayout
-        android:background="?attr/colorCdlBackBackground"
+        android:layout_marginTop="10dp"
+        android:background="?attr/colorBackground"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:id="@+id/update_rl"
         android:layout_width="match_parent"
         android:layout_height="56dp">
+
+        <ImageView
+            android:background="?attr/colorBackground"
+            android:layout_marginStart="10dp"
+            android:id="@+id/checkUpdate_img"
+            android:src="@drawable/ic_file_download_black_24dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <TextView
+            android:layout_toEndOf="@+id/checkUpdate_img"
             android:textColor="?attr/colorTextView"
             android:layout_marginStart="@dimen/settingMarginStart"
             android:layout_centerVertical="true"
@@ -23,6 +35,4 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
-    <include
-        layout="@layout/dividerview_include"/>
 </LinearLayout>

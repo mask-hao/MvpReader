@@ -162,7 +162,7 @@ public class PhotoActivity extends BaseActivity{
     }
 
     private void savePhoto() {
-        initPermission(COMMON_PERMISSIONS);
+//        initPermission(COMMON_PERMISSIONS);
         getBitmap().observeOn(AndroidSchedulers.mainThread());
 
     }

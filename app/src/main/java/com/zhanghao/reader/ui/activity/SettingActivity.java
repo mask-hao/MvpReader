@@ -14,6 +14,9 @@ import com.zhanghao.reader.R;
 import com.zhanghao.reader.bean.AppInfo;
 import com.zhanghao.reader.contract.DownLoadAppContract;
 import com.zhanghao.reader.presenter.DownLoadAppPresenterImpl;
+import com.zhanghao.reader.ui.listener.PermissionListener;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,7 +65,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.update_rl:
-                initPermission(COMMON_PERMISSIONS);
                 checkUpdate();
                 break;
 
@@ -71,9 +73,39 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     }
 
+    /**
+     * 检查跟新
+     */
     private void checkUpdate() {
-        updatePresenter =new DownLoadAppPresenterImpl(this);
-        updatePresenter.getAppInfo();
+        requestRunTimePermissions(COMMON_PERMISSIONS, new PermissionListener() {
+            @Override
+            public void onGranted() {
+                updatePresenter =new DownLoadAppPresenterImpl(SettingActivity.this);
+                updatePresenter.getAppInfo();
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermissions) {
+                String deniedPermission="";
+                for (String permission : deniedPermissions) {
+                    deniedPermission+=permission;
+                }
+                alertDialog=new AlertDialog.Builder(SettingActivity.this)
+                        .setMessage(deniedPermission)
+                        .setPositiveButton(R.string.sure,
+                                ((dialog, which) ->
+                                        alertDialog.dismiss()
+                                ))
+                        .setNegativeButton(R.string.setting,((dialog, which) ->
+                        {
+                            alertDialog.dismiss();
+                            startAppSettings();
+                        }
+                        ))
+                        .show();
+            }
+        });
+
     }
 
 
@@ -83,22 +115,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         int loadVersionCode= Integer.parseInt(appInfo.getBuild());
         final String url=appInfo.getInstall_url().replace("http://download.fir.im/","");
         if (loadVersionCode>buildVersionCode){
-
             alertDialog=new AlertDialog.Builder(this)
                     .setTitle("有更新")
                     .setMessage(appInfo.getChangelog())
-                    .setPositiveButton(R.string.cancle, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            alertDialog.cancel();
-                        }
-                    })
-                    .setNegativeButton(R.string.sure, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            updatePresenter.startDownLoadService(SettingActivity.this,url);
-                        }
-                    })
+                    .setPositiveButton(R.string.sure,(dialog, which) -> updatePresenter.startDownLoadService(SettingActivity.this,url))
+                    .setNegativeButton(R.string.cancle, (dialog, which) -> alertDialog.cancel())
                     .show();
         }
         if (loadVersionCode==buildVersionCode) Toast.makeText(this,"您已经安装最新版本App",Toast.LENGTH_SHORT).show();

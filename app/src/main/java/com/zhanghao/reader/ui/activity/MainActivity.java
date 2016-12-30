@@ -2,12 +2,14 @@ package com.zhanghao.reader.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,6 +33,7 @@ import com.zhanghao.reader.bean.AppInfo;
 import com.zhanghao.reader.bean.ThemeChangeMessage;
 import com.zhanghao.reader.contract.DownLoadAppContract;
 import com.zhanghao.reader.presenter.DownLoadAppPresenterImpl;
+import com.zhanghao.reader.ui.listener.PermissionListener;
 import com.zhanghao.reader.ui.listener.RefreshUIListener;
 import com.zhanghao.reader.utils.DayNight;
 import com.zhanghao.reader.utils.FragmentUtil;
@@ -39,6 +42,7 @@ import com.zhanghao.reader.utils.MainMenu;
 import com.zhanghao.reader.utils.SpUtil;
 import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
+import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -84,18 +88,48 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
+    /**
+     * 检查更新
+     */
     private void initUpdateVersion() {
-        initPermission(COMMON_PERMISSIONS);
-        updatePresenter=new DownLoadAppPresenterImpl(this);
-        updatePresenter.getAppInfo();
+        requestRunTimePermissions(COMMON_PERMISSIONS, new PermissionListener() {
+            @Override
+            public void onGranted() {
+                updatePresenter=new DownLoadAppPresenterImpl(MainActivity.this);
+                updatePresenter.getAppInfo();
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermissions) {
+                String deniedPermission="";
+                for (String permission : deniedPermissions) {
+                    deniedPermission+=permission;
+                }
+                alertDialog=new AlertDialog.Builder(MainActivity.this)
+                        .setMessage(deniedPermission)
+                        .setPositiveButton(R.string.sure,
+                                ((dialog, which) ->
+                                        alertDialog.dismiss()
+                                ))
+                        .setNegativeButton(R.string.setting,((dialog, which) ->
+                        {
+                            alertDialog.dismiss();
+                            startAppSettings();
+                        }
+                        ))
+                        .show();
+            }
+        });
+
+
     }
+
 
 
     private void initView() {
         toggle = new ActionBarDrawerToggle(this, drawerMain, toolbar, R.string.open, R.string.close);
         toggle.syncState();
         drawerMain.addDrawerListener(toggle);
-
         mainNav.setNavigationItemSelectedListener(this);
         changeUtil = new FragmentUtil(this);
     }
@@ -276,22 +310,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         int loadVersionCode= Integer.parseInt(appInfo.getBuild());
         final String url=appInfo.getInstall_url().replace("http://download.fir.im/","");
         if (loadVersionCode>buildVersionCode){
-
             alertDialog=new AlertDialog.Builder(this)
                     .setTitle("有更新")
                     .setMessage(appInfo.getChangelog())
-                    .setPositiveButton(R.string.cancle, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            alertDialog.cancel();
-                        }
-                    })
-                    .setNegativeButton(R.string.sure, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            updatePresenter.startDownLoadService(MainActivity.this,url);
-                        }
-                    })
+                    .setNegativeButton(R.string.cancle, (dialog, which) -> alertDialog.cancel())
+                    .setPositiveButton(R.string.sure, (dialog, which) -> updatePresenter.startDownLoadService(MainActivity.this,url))
                     .show();
         }
     }
