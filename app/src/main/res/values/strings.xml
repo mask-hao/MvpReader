@@ -14,4 +14,6 @@
     <string name="cancle">取消</string>
     <string name="sure">确定</string>
     <string name="download">下载</string>
+    <string name="share">分享</string>
+    <string name="save">保存</string>
 </resources>

@@ -206,7 +206,7 @@ public class ZhiHuFragment extends BaseFragment implements ZhiHuDailyContract.Vi
     public void showError(Throwable error) {
         ///Log.d(TAG, error.getCause().getMessage());
 //        Toast.makeText(getContext(), "加载出错，请重试！\n", Toast.LENGTH_SHORT).show();
-        snackbar=Snackbar.make(zhihuFragCdl,"加载失败！",Snackbar.LENGTH_INDEFINITE)
+        snackbar=Snackbar.make(getActivity().getWindow().getDecorView(),"加载失败！",Snackbar.LENGTH_INDEFINITE)
                 .setAction("重试", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

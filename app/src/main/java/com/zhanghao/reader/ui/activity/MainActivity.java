@@ -3,10 +3,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,11 +21,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.squareup.picasso.Picasso;
 import com.zhanghao.reader.BuildConfig;
 import com.zhanghao.reader.R;
@@ -41,14 +37,11 @@ import com.zhanghao.reader.utils.FragmentUtil;
 import com.zhanghao.reader.utils.FragmentConfig;
 import com.zhanghao.reader.utils.MainMenu;
 import com.zhanghao.reader.utils.SpUtil;
-import com.zhanghao.reader.utils.StatusBarUtil;
-
 import org.greenrobot.eventbus.EventBus;
-
-import java.net.URL;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,DownLoadAppContract.View{
     @BindView(R.id.toolbar_include)
@@ -83,7 +76,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        refreshStatusBar();
+        refreshStatusBarTest();
         initView();
         initMenu();
         initUpdateVersion();
@@ -210,19 +203,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Log.d(TAG, "test: 改变主题之后："+statusBarColor.resourceId);
         if (Build.VERSION.SDK_INT>=21){
             getWindow().setStatusBarColor(getResources().getColor(statusBarColor.resourceId));
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            getWindow().addFlags(SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
         }
-
-
-    }
-
-
-    protected void refreshStatusBar(){
-        Resources.Theme theme=getTheme();
-        TypedValue statusBarColor=new TypedValue();
-        theme.resolveAttribute(R.attr.colorPrimaryDark,statusBarColor,true);
-        Log.d(TAG, "refreshStatusBar: 开启应用时候："+statusBarColor.resourceId);
-        StatusBarUtil.setTransparent(this);
-
     }
 
     /**
@@ -231,11 +215,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void toggleThemeSetting(MenuItem menuItem) {
         if (dayNightUtil.isDay()){
             dayNightUtil.setMode(DayNight.NIGHT);
-            setTheme(R.style.NightTheme);
+            setTheme(R.style.NightThemeMaterial);
             menuItem.setTitle(R.string.day_mode);
         }else{
             dayNightUtil.setMode(DayNight.DAY);
-            setTheme(R.style.DayTheme);
+            setTheme(R.style.DayThemeMaterial);
             menuItem.setTitle(R.string.nigth_mode);
         }
     }

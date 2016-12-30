@@ -21,8 +21,6 @@ import com.zhanghao.reader.presenter.ZhiHuStartImgPresenterImpl;
 import com.zhanghao.reader.utils.ActivityUtil;
 import com.zhanghao.reader.utils.NetWorkUtil;
 import com.zhanghao.reader.utils.SpUtil;
-import com.zhanghao.reader.utils.StatusBarUtil;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

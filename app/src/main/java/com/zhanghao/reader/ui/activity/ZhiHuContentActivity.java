@@ -24,8 +24,6 @@ import com.zhanghao.reader.R;
 import com.zhanghao.reader.bean.ZhiHuContent;
 import com.zhanghao.reader.contract.ZhiHuContentContract;
 import com.zhanghao.reader.presenter.ZhiHuNewsContentPresenterImpl;
-import com.zhanghao.reader.utils.StatusBarUtil;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

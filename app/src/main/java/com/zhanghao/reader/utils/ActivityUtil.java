@@ -31,10 +31,11 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
-    public static void toPhotoActivity(Activity context, String url, View view){
+    public static void toPhotoActivity(Activity context, String url,String date, View view){
         Intent intent=new Intent(context, PhotoActivity.class);
-        ActivityOptionsCompat optionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(context,view,PhotoActivity.TRANSIT_PIC);
+        ActivityOptionsCompat optionsCompat=ActivityOptionsCompat.makeScaleUpAnimation(view,view.getWidth()/2,view.getHeight()/2,0,0);
         intent.putExtra("url",url);
+        intent.putExtra("date",date);
         ActivityCompat.startActivity(context,intent,optionsCompat.toBundle());
 //        context.startActivity(intent);
     }

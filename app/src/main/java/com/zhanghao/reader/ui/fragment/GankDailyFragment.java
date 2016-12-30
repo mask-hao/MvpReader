@@ -148,7 +148,7 @@ public class GankDailyFragment extends BaseFragment implements GankDailyContract
     @Override
     public void showError(Throwable e) {
         Log.d(TAG, "showError: " + e.getMessage());
-        snackbar=Snackbar.make(gankFragCdl,"加载失败！",Snackbar.LENGTH_INDEFINITE)
+        snackbar=Snackbar.make(getActivity().getWindow().getDecorView(),"加载失败！",Snackbar.LENGTH_INDEFINITE)
                 .setAction("重试", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -180,7 +180,9 @@ public class GankDailyFragment extends BaseFragment implements GankDailyContract
         GankDailyItem gankDailyItem = (GankDailyItem) photoAll.get(position);
         String url = gankDailyItem.getUrl();
         Log.d(TAG, "onPhotoClick: " + url);
-        ActivityUtil.toPhotoActivity(getActivity(),url,photo);
+        String dateGet = gankDailyItem.getDate();
+        String date = TimeUtils.getCurrentDate("yyyy-MM-dd", "yyyy/MM/dd", dateGet);
+        ActivityUtil.toPhotoActivity(getActivity(),url,date,photo);
     }
 
 

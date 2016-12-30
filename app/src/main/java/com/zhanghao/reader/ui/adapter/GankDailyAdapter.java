@@ -60,7 +60,7 @@ public class GankDailyAdapter extends ComAdapter<DisplayItem>{
                 @Override
                 public void onClick(View view) {
                     int pos=comViewHolder.getLayoutPosition();
-                    onItemClickListener.onPhotoClick(photo_iv,pos);
+                    onItemClickListener.onPhotoClick(comViewHolder.getConvertView(),pos);
                 }
             });
 

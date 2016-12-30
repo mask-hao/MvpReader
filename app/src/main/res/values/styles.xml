@@ -3,7 +3,8 @@
     <style name="AppTheme" parent="BaseAppTheme"/>
     <style name="DayTheme" parent="BaseDayTheme"/>
     <style name="NightTheme" parent="BaseNightTheme"/>
-
+    <style name="DayThemeMaterial" parent="BaseDayTheme"/>
+    <style name="NightThemeMaterial" parent="BaseNightTheme"/>
 
 
     <!-- Base application theme. -->
@@ -12,9 +13,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
 
         <item name="colorBackground">@android:color/white</item>
         <item name="colorTextView">@android:color/black</item>
@@ -30,8 +28,6 @@
         <item name="colorAccent">@color/colorAccent</item>
 
 
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
 
         <item name="colorBackground">@android:color/white</item>
         <item name="colorTextView">@android:color/black</item>
@@ -45,9 +41,6 @@
         <item name="colorPrimaryDark">@color/md_blue_grey_900</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-
 
         <item name="colorBackground">@color/md_blue_grey_700</item>
         <item name="colorTextView">@color/md_blue_grey_100</item>
@@ -55,6 +48,35 @@
         <item name="colorCdlBackBackground">@color/md_blue_grey_900</item>
     </style>
 
+
+
+    <style name="BaseDayThemeMaterial" parent="android:Theme.Material.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+        <item name="colorBackground">@android:color/white</item>
+        <item name="colorTextView">@android:color/black</item>
+        <item name="colorCardBackground">@android:color/white</item>
+        <item name="colorCdlBackBackground">@color/md_grey_200</item>
+    </style>
+
+
+    <style name="BaseNightThemeMaterial" parent="android:Theme.Material.Light">
+        <item name="colorPrimary">@color/md_blue_grey_800</item>
+        <item name="colorPrimaryDark">@color/md_blue_grey_900</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+        <item name="colorBackground">@color/md_blue_grey_700</item>
+        <item name="colorTextView">@color/md_blue_grey_100</item>
+        <item name="colorCardBackground">@color/md_blue_grey_700</item>
+        <item name="colorCdlBackBackground">@color/md_blue_grey_900</item>
+    </style>
 
 
 </resources>
