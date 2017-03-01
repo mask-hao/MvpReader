@@ -50,7 +50,7 @@ public class ZhiHuStartImgPresenterImpl extends BasePresenterImpl implements Zhi
 
                     @Override
                     public void onError(Throwable e) {
-
+                        mView.setUpStartImg(null);
                     }
 
                     @Override

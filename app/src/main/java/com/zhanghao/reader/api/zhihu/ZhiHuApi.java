@@ -64,19 +64,16 @@ public class ZhiHuApi extends WebApi{
     private void initApi(){
         initCache();
         OkHttpClient okHttpClient=new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request=chain.request();
-                        if (!NetWorkUtil.isNetWorkAvailable(MyApplication.getContext())){
-                           request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build();
-                        }
-                        return chain.proceed(request);
+                .addInterceptor((chain -> {
+                    Request request=chain.request();
+                    if (!NetWorkUtil.isNetWorkAvailable(MyApplication.getContext())){
+                        request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build();
                     }
-                })
+                    return chain.proceed(request);
+                }))
                 .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                 .cache(cache)
-                .connectTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
                 .build();
        retrofit=getApi(baseUrl,okHttpClient);
     }

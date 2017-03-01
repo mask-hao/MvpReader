@@ -18,6 +18,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -132,6 +135,8 @@ public class ZhiHuFragment extends BaseFragment implements ZhiHuDailyContract.Vi
         });
         zhihuRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         zhihuRecycler.setItemAnimator(new DefaultItemAnimator());
+
+
         if (presenter!=null)
             presenter.getLatestZhiHuNews(false);
     }
@@ -172,13 +177,18 @@ public class ZhiHuFragment extends BaseFragment implements ZhiHuDailyContract.Vi
 
         loadMoreWrapper.setLoadMoreView(R.layout.loadmore);
         zhihuRecycler.setAdapter(loadMoreWrapper);
-        loadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
-            @Override
-            public void OnLoadMore() {
+
+        Animation animation= AnimationUtils.loadAnimation(getContext(),R.anim.anim_item);
+        LayoutAnimationController controller=new LayoutAnimationController(animation);
+        controller.setDelay(0.5f);
+        controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
+        zhihuRecycler.setLayoutAnimation(controller);
+
+
+        loadMoreWrapper.setOnLoadMoreListener(()-> {
                 loadMoreWrapper.setIsLoadMore(true);
                 now = TimeUtils.getBeforeDate("yyyyMMdd", now);
                 presenter.getDailyNews(now);
-            }
         });
         zhiHuAdapter.setOnItemClickListener(this);
     }
