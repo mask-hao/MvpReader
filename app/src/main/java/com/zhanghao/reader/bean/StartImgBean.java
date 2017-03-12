@@ -6,7 +6,7 @@ import com.google.gson.Gson;
  * Created by zhanghao on 2016/12/9.
  */
 
-public class ZhiHuStartImgBean {
+public class StartImgBean {
 
     /**
      * text : Katie Barrett
@@ -16,9 +16,9 @@ public class ZhiHuStartImgBean {
     private String text;
     private String img;
 
-    public static ZhiHuStartImgBean objectFromData(String str) {
+    public static StartImgBean objectFromData(String str) {
 
-        return new Gson().fromJson(str, ZhiHuStartImgBean.class);
+        return new Gson().fromJson(str, StartImgBean.class);
     }
 
     public String getText() {

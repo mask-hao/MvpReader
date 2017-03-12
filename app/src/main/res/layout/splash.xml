@@ -5,7 +5,7 @@
 <ImageView
     android:id="@+id/zhihu_start_img"
     android:adjustViewBounds="true"
-    android:scaleType="fitXY"
+    android:scaleType="centerCrop"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
     <TextView

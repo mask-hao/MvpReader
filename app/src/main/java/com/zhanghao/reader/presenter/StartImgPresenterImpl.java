@@ -1,11 +1,12 @@
 package com.zhanghao.reader.presenter;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
-import com.zhanghao.reader.api.zhihu.ZhiHuApi;
-import com.zhanghao.reader.api.zhihu.ZhiHuService;
-import com.zhanghao.reader.bean.ZhiHuStartImgBean;
-import com.zhanghao.reader.contract.ZhiHuStartContract;
+import com.zhanghao.reader.api.gank.StartImgApi;
+import com.zhanghao.reader.api.gank.StartImgService;
+import com.zhanghao.reader.bean.StartImgBean;
+import com.zhanghao.reader.contract.StartImgContract;
 
 import rx.Observer;
 import rx.Subscription;
@@ -17,32 +18,28 @@ import rx.schedulers.Schedulers;
  * Created by zhanghao on 2016/12/9.
  */
 
-public class ZhiHuStartImgPresenterImpl extends BasePresenterImpl implements ZhiHuStartContract.Presenter{
+public class StartImgPresenterImpl extends BasePresenterImpl implements StartImgContract.Presenter{
+
+    private static final String TAG = "StartImgPresenterImpl";
 
     @NonNull
-    private final ZhiHuStartContract.View mView;
+    private final StartImgContract.View mView;
 
+    private StartImgService startImgService;
 
-    private ZhiHuService zhiHuService;
-
-    public ZhiHuStartImgPresenterImpl(@NonNull ZhiHuStartContract.View mView) {
+    public StartImgPresenterImpl(@NonNull StartImgContract.View mView) {
         this.mView=mView;
-        zhiHuService=new ZhiHuApi().getService();
+        startImgService=new StartImgApi().getService();
         mView.setPresenter(this);
     }
 
     @Override
-    public void getStartZhiHuStartImg() {
-        Subscription subscription=zhiHuService.getZhiHuFlashImg()
-                .map(new Func1<ZhiHuStartImgBean, ZhiHuStartImgBean>() {
-                    @Override
-                    public ZhiHuStartImgBean call(ZhiHuStartImgBean zhiHuStartImgBean) {
-                        return zhiHuStartImgBean;
-                    }
-                })
+    public void getStartImg() {
+        Subscription subscription=startImgService.getStartImg()
+                .map(zhiHuStartImgBean -> zhiHuStartImgBean)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ZhiHuStartImgBean>() {
+                .subscribe(new Observer<StartImgBean>() {
                     @Override
                     public void onCompleted() {
 
@@ -50,15 +47,17 @@ public class ZhiHuStartImgPresenterImpl extends BasePresenterImpl implements Zhi
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "onError: "+e.getMessage());
                         mView.setUpStartImg(null);
                     }
 
                     @Override
-                    public void onNext(ZhiHuStartImgBean zhiHuStartImgBean) {
+                    public void onNext(StartImgBean zhiHuStartImgBean) {
                         mView.setUpStartImg(zhiHuStartImgBean);
                     }
                 });
-//        Subscription subscription=zhiHuService.getZhiHuFlashImg()
+//        Subscription subscription=zhiHuService.getStartImg()
 //                .map(zhiHuStartImgBean -> zhiHuStartImgBean)
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())

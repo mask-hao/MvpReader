@@ -1,7 +1,7 @@
 package com.zhanghao.reader.api.zhihu;
 import com.zhanghao.reader.bean.ZhiHuContent;
 import com.zhanghao.reader.bean.ZhiHuDailyItem;
-import com.zhanghao.reader.bean.ZhiHuStartImgBean;
+import com.zhanghao.reader.bean.StartImgBean;
 import com.zhanghao.reader.bean.ZhiHuLatestItem;
 
 import retrofit2.http.GET;
@@ -25,6 +25,6 @@ public interface ZhiHuService {
     Observable<ZhiHuContent> getNewContent(@Path("id")String id);
 
     @GET("/api/4/start-image/1920*1080")
-    Observable<ZhiHuStartImgBean> getZhiHuFlashImg();
+    Observable<StartImgBean> getZhiHuFlashImg();
 
 }
