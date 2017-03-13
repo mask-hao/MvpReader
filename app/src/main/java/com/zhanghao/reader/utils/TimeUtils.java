@@ -1,11 +1,13 @@
 package com.zhanghao.reader.utils;
 
+import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.zhanghao.reader.MyApplication;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -55,11 +57,13 @@ public class TimeUtils {
 
 
     public static String getBeforeDate(String pattern,String date){
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat();
-        simpleDateFormat.applyPattern(pattern);
+        // TODO: 2017/3/12 修改时间月份出错bug
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat(pattern);
         Calendar calendar=Calendar.getInstance();
         try {
-            calendar.setTime(simpleDateFormat.parse(date));
+            Date datein=simpleDateFormat.parse(date);
+            calendar.setTime(datein);
+
         } catch (ParseException e) {
             e.printStackTrace();
             System.out.println("格式错误");

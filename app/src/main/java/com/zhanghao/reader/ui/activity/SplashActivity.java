@@ -1,5 +1,4 @@
 package com.zhanghao.reader.ui.activity;
-
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,10 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
 import com.zhanghao.reader.R;
 import com.zhanghao.reader.bean.StartImgBean;
@@ -21,6 +19,11 @@ import com.zhanghao.reader.presenter.StartImgPresenterImpl;
 import com.zhanghao.reader.utils.ActivityUtil;
 import com.zhanghao.reader.utils.NetWorkUtil;
 import com.zhanghao.reader.utils.SpUtil;
+import com.zhanghao.reader.utils.TimeUtils;
+
+import java.util.Calendar;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,9 +34,9 @@ import butterknife.ButterKnife;
 public class SplashActivity extends AppCompatActivity implements StartImgContract.View {
     private static final String TAG = "SplashActivity";
     @BindView(R.id.zhihu_start_img)
-    ImageView zhihuStartImg;
+    ImageView startImg;
     @BindView(R.id.zhihu_start_tv)
-    TextView zhihuStartTv;
+    TextView startTv;
 
     private StartImgContract.Presenter presenter;
     private AlphaAnimation alphaAnimation;
@@ -65,23 +68,27 @@ public class SplashActivity extends AppCompatActivity implements StartImgContrac
 //        }
 
         ButterKnife.bind(this);
+        SpUtil.init(this, FILE_NAME);
 
+
+
+        initView();
+        initData();
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        initView();
-        initData();
+
     }
 
     private void initView() {
 //        StatusBarUtil.setTransparent(this);
-
-        alphaAnimation=new AlphaAnimation(0.3f,1.0f);
+        alphaAnimation=new AlphaAnimation(1.0f,1.0f);
         alphaAnimation.setFillAfter(true);
-        alphaAnimation.setDuration(3000);
+        alphaAnimation.setInterpolator(new LinearInterpolator());
+        alphaAnimation.setDuration(1000);
         alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -103,18 +110,23 @@ public class SplashActivity extends AppCompatActivity implements StartImgContrac
 
     private void initData() {
 
-        SpUtil.init(this, FILE_NAME);
+
 
         presenter = new StartImgPresenterImpl(this);
-        if (NetWorkUtil.isNetWorkAvailable(this)) presenter.getStartImg();
-        else {
-            String savedUrl = SpUtil.getSavedString(URL_NAME);
 
+        String savedUrl = SpUtil.getSavedString(URL_NAME);
+
+        if (NetWorkUtil.isNetWorkAvailable(this))
+        {
+            setUpStartImage(savedUrl);
+            presenter.getStartImg();
+        }else{
             if ("".equals(savedUrl) || null == savedUrl)
                 goToMainActivity();
             else
                 setUpStartImage(savedUrl);
         }
+
     }
 
     @Override
@@ -125,19 +137,22 @@ public class SplashActivity extends AppCompatActivity implements StartImgContrac
         else {
             String url = zhiHuStartImgBean.getImg();
             Log.d(TAG, "setUpStartImg: "+url);
-            SpUtil.saveString(URL_NAME, url);
-            setUpStartImage(url);
-            zhihuStartTv.setText(zhiHuStartImgBean.getText());
+            if (!url.equals(SpUtil.getSavedString(URL_NAME))){
+                SpUtil.saveString(URL_NAME, url);
+            }
+
+//            setUpStartImage(url);
         }
+        startTv.setText(getDateText());
+        startImg.startAnimation(alphaAnimation);
     }
 
 
     private void setUpStartImage(String url) {
         Picasso.with(this)
                 .load(url)
-                .into(zhihuStartImg);
-        zhihuStartImg.startAnimation(alphaAnimation);
-
+                .into(startImg);
+//        startImg.setAlpha(0.5f);
     }
 
 
@@ -165,5 +180,10 @@ public class SplashActivity extends AppCompatActivity implements StartImgContrac
     @Override
     public void setPresenter(StartImgContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+
+    private String getDateText() {
+        return TimeUtils.getCurrentDate("YYYY-MM-dd");
     }
 }
